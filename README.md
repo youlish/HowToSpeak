@@ -52,7 +52,7 @@ p/s: Tất cả các video được lấy trên Youtube
 
 ## Meta
 
-Your Name – [@YourFacebook](https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
+Hinh_CT – [@Facebook](https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
 
 
 <!-- Markdown link & img dfn's -->
