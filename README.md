@@ -20,69 +20,40 @@ Câu trả lời là “Tại sao không?”
 * Tiếng Anh trong phim là ngôn ngữ “thật” (hay ngôn ngữ “sống”) thường được sử dụng trong cuộc sống thực sự, nó khác với Tiếng Anh trong các bài luyện nghe được thiết kế, thu âm cho phù hợp với việc học tập. Các câu thoại trong phim là những câu từ người bản xứ vẫn nói hàng ngày, có cả những từ lóng, idioms,...mà bạn rất khó có thể học được nếu không có cơ hội tiếp xúc với họ.
 * Phim thường tạo ra cảm xúc mạnh mẽ cho người xem, chính vì thế những gì bạn học được sẽ in sâu hơn trong tâm trí bạn cùng với những cảm xúc ấy.
 * Nhờ xem phim, bạn có thể vừa luyện nghe – nói, cách phát âm, vừa học từ mới và cả rèn luyện phản xạ khi giao tiếp,...
+
+Ý tưởng được lấy cảm hứng từ website [https://youglish.com/](https://youglish.com/)
+
+Các chức năng chính :
+
+1. Gợi ý các video
+1. Search video theo từ hoặc câu
+3. Play video có phụ đề ( tương tự website trên)
+4. Từ điển
+5. Đưa ra được kết qua phù hợp với sở thích người dùng( Lọc video).
+
+p/s: Tất cả các video được lấy trên Youtube
 	
 
 ![](header.png)
 
 ## Installation
 
-OS X & Linux:
-
-```sh
-npm install my-crazy-module --save
-```
-
-Windows:
-
-```sh
-edit autoexec.bat
-```
 
 ## Usage example
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
-
-_For more examples and usage, please refer to the [Wiki][wiki]._
 
 ## Development setup
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
-
-```sh
-make install
-npm test
-```
 
 ## Release History
 
-* 0.2.1
-    * CHANGE: Update docs (module code remains unchanged)
-* 0.2.0
-    * CHANGE: Remove `setDefaultXYZ()`
-    * ADD: Add `init()`
-* 0.1.1
-    * FIX: Crash when calling `baz()` (Thanks @GenerousContributorName!)
-* 0.1.0
-    * The first proper release
-    * CHANGE: Rename `foo()` to `bar()`
 * 0.0.1
     * Work in progress
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Your Name – [@YourFacebook](https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
 
-Distributed under the XYZ license. See ``LICENSE`` for more information.
-
-[https://github.com/yourname/github-link](https://github.com/dbader/)
-
-## Contributing
-
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
 
 <!-- Markdown link & img dfn's -->
 [npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
