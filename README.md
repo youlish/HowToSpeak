@@ -36,7 +36,9 @@ p/s: Tất cả các video được lấy trên Youtube
 
 ![](header.png)
 
-## Installation
+## Nền tảng công nghệ
+Ứng dụng được phát triển hoạt động trên Android
+API được code bằng .Net	
 
 
 ## Usage example
