@@ -38,6 +38,7 @@ p/s: Tất cả các video được lấy trên Youtube
 
 ## Nền tảng công nghệ
 Ứng dụng được phát triển hoạt động trên Android
+
 API được code bằng .Net	
 
 
