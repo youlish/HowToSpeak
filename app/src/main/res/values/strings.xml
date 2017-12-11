@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">HowToSpeak</string>
+    <string name="app_name">How to Speak</string>
+    <string name="introduce_1">Login now for more features</string>
+    <string name="introduce_2">Over 50,000 videos\nBuilt-in dictionary and word bank\nPresonal profile with learning stats
+    \nVoice recording and playback functions</string>
+    <string name="login_now">Login now</string>
+    <string name="watch">Watch</string>
+    <string name="learn">Learn</string>
+    <string name="my_page">My Page</string>
+    <string name="more">More</string>
+
+    <!-- Option menu string -->
+
+    <string name="settings">Settings</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="guide">Guide</string>
+    <string name="rate">Rate</string>
+    <string name="facebook_page">Facebook Page</string>
+    <string name="instagram">Instagram</string>
+    <string name="feed_back">Feedback</string>
+    <string name="about">About</string>
+    <string name="category">Category</string>
+
+    <string name="featured_videos">Featured Videos</string>
+    <string name="popular_videos">Popular Videos</string>
+    <string name="recently_videos">Recently Videos</string>
 </resources>
