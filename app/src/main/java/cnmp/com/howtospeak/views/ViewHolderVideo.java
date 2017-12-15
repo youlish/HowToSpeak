@@ -1,10 +1,14 @@
 package cnmp.com.howtospeak.views;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import cnmp.com.howtospeak.R;
 
@@ -14,22 +18,29 @@ import cnmp.com.howtospeak.R;
 
 public class ViewHolderVideo extends RecyclerView.ViewHolder {
     public TextView txtVideoTitle;
-    public ImageView imvVideoThumbnail;
     public TextView txtLevel;
+    public YouTubeThumbnailView thumbai;
+    private String videoID;
+
+    public void setVideoID(String videoID) {
+        this.videoID = videoID;
+    }
 
     public ViewHolderVideo(final View itemView) {
         super(itemView);
 
         txtVideoTitle = itemView.findViewById(R.id.txt_video_title);
         txtLevel = itemView.findViewById(R.id.txt_level);
-        imvVideoThumbnail = itemView.findViewById(R.id.imv_thumbnail_video);
-
+        thumbai = (YouTubeThumbnailView) itemView.findViewById(R.id.thumbnail);
         //called when click icon of video
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(itemView.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), videoID, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), PlayVideo.class);
+                intent.putExtra("VideoID", videoID);
+                view.getContext().startActivity(intent);
             }
         });
     }

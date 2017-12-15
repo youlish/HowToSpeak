@@ -8,7 +8,7 @@ public class Video {
 
     private String videoTitle;
     private String level;
-    private int resImage;
+    private String videoId;
 
     public String getVideoTitle() {
         return videoTitle;
@@ -26,22 +26,17 @@ public class Video {
         this.level = level;
     }
 
-    public int getResImage() {
-        return resImage;
-    }
+    public String getVideoId(){return videoId;}
 
-    public void setResImage(int resImage) {
-        this.resImage = resImage;
-    }
-
+    public void setVideoId(String videoId){this.videoId = videoId;}
     public Video() {
 
     }
 
-    public Video(String videoTitle, String level, int resImage) {
+    public Video(String videoTitle, String level, String videoId) {
 
         this.videoTitle = videoTitle;
         this.level = level;
-        this.resImage = resImage;
+        this.videoId = videoId;
     }
 }
