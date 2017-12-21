@@ -65,13 +65,15 @@ public class RecyclerViewVideoApdater extends RecyclerView.Adapter<ViewHolderVid
     public void onBindViewHolder(ViewHolderVideo holder, int position) {
         Video video = list.get(position);
         holder.txtLevel.setText(video.getLevel());
-
         YouTubeThumbnailLoader loader = thumbnailViewToLoaderMap.get(holder.thumbai);
+        holder.thumbai.initialize(DeveloperKey.DEVELOPER_KEY, thumbnailListener);
         if(loader == null){
             holder.thumbai.setTag(video.getVideoId());
         }else {
+            holder.thumbai.setTag(video.getVideoId());
             holder.thumbai.setImageResource(R.drawable.loading_thumbnail);
             loader.setVideo(video.getVideoId());
+
         }
         holder.txtVideoTitle.setText(video.getVideoTitle());
         holder.txtVideoTitle.setVisibility(labelsVisible ? View.VISIBLE : View.GONE);
