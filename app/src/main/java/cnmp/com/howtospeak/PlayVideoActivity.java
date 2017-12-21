@@ -1,18 +1,13 @@
-package cnmp.com.howtospeak.views;
+package cnmp.com.howtospeak;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -20,15 +15,13 @@ import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 
-import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.fragment.VideoFragment;
-import cnmp.com.howtospeak.fragment.WatchFragment;
 
 /**
  * Created by Dung on 12/14/2017.
  */
 
-public class PlayVideo extends Activity implements YouTubePlayer.OnFullscreenListener {
+public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener {
     /**Khoảng thời gian hoạt hình trượt lên trong video theo chân dung*/
     private static final int ANIMATION_DURATION_MILLIS = 300;
     /**Khoảng đệm giữa danh sách video và video theo hướng ngang.*/
@@ -44,7 +37,7 @@ public class PlayVideo extends Activity implements YouTubePlayer.OnFullscreenLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.play_video);
+        setContentView(R.layout.activity_play_video);
         videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
 
         videoBox = findViewById(R.id.video_box);
@@ -52,7 +45,6 @@ public class PlayVideo extends Activity implements YouTubePlayer.OnFullscreenLis
         videoBox.setVisibility(View.INVISIBLE);
         Intent intent = getIntent();
         videoId = intent.getExtras().getString("VideoID");
-        Toast.makeText(this, videoId, Toast.LENGTH_SHORT).show();
         videoFragment.setVideoId(videoId);
         if(videoBox.getVisibility() != View.VISIBLE){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){

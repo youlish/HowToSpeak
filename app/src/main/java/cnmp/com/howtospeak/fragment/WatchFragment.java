@@ -1,41 +1,48 @@
 package cnmp.com.howtospeak.fragment;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import com.google.android.youtube.player.YouTubePlayer;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
 import cnmp.com.howtospeak.R;
+import cnmp.com.howtospeak.ResultsSearchActivity;
 import cnmp.com.howtospeak.adapter.RecyclerViewCategoryAdapter;
-import cnmp.com.howtospeak.adapter.RecyclerViewVideoApdater;
+import cnmp.com.howtospeak.adapter.RecyclerViewHorizontalVideoApdater;
 import cnmp.com.howtospeak.model.Category;
 import cnmp.com.howtospeak.model.Video;
 
-public class WatchFragment extends Fragment {
+public class WatchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private ArrayList<Video> listFeaturedVideos = new ArrayList<>();
     private RecyclerView recyclerViewFeaturedVideos;
-    private RecyclerViewVideoApdater featuredVideosAdapter;
+    private RecyclerViewHorizontalVideoApdater featuredVideosAdapter;
 
     private ArrayList<Video> listPopularVideos = new ArrayList<>();
     private RecyclerView recyclerPopularVideos;
-    private RecyclerViewVideoApdater popularVideoAdapter;
+    private RecyclerViewHorizontalVideoApdater popularVideoAdapter;
 
     private ArrayList<Video> listRecentlyVideos = new ArrayList<>();
     private RecyclerView recyclerRecentlyVideos;
-    private RecyclerViewVideoApdater recentlyVideoAdapter;
+    private RecyclerViewHorizontalVideoApdater recentlyVideoAdapter;
 
     private ArrayList<Category> listCategory = new ArrayList<>();
     private RecyclerView recyclerCategory;
     private RecyclerViewCategoryAdapter categoryAdapter;
+
+    private SearchView searchView;
 
 
 
@@ -54,15 +61,15 @@ public class WatchFragment extends Fragment {
 
         recyclerViewFeaturedVideos = contentView.findViewById(R.id.recyclerFeaturedVideo);
         recyclerViewFeaturedVideos.setHasFixedSize(true);
-        featuredVideosAdapter = new RecyclerViewVideoApdater(getContext(),listFeaturedVideos);
+        featuredVideosAdapter = new RecyclerViewHorizontalVideoApdater(getContext(),listFeaturedVideos);
 
         recyclerPopularVideos = contentView.findViewById(R.id.recyclerPopularVideos);
         recyclerPopularVideos.setHasFixedSize(true);
-        popularVideoAdapter = new RecyclerViewVideoApdater(getContext(),listFeaturedVideos);
+        popularVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(),listFeaturedVideos);
 
         recyclerRecentlyVideos = contentView.findViewById(R.id.recyclerRecentlyVideos);
         recyclerRecentlyVideos.setHasFixedSize(true);
-        recentlyVideoAdapter = new RecyclerViewVideoApdater(getContext(),listFeaturedVideos);
+        recentlyVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(),listFeaturedVideos);
 
         recyclerCategory = contentView.findViewById(R.id.reyclerCategory);
         recyclerCategory.setHasFixedSize(true);
@@ -96,6 +103,8 @@ public class WatchFragment extends Fragment {
         recyclerCategory.setAdapter(categoryAdapter);
         recyclerCategory.setLayoutManager(layoutManager);
         initCategory();
+
+        setHasOptionsMenu(true);
 
         return contentView;
     }
@@ -153,6 +162,32 @@ public class WatchFragment extends Fragment {
         recentlyVideoAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.search_view);
+        searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(this);
+        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(Color.BLACK);
+        searchEditText.setHintTextColor(Color.BLACK);
+        searchEditText.setHint(R.string.search);
+
+    }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Intent intent = new Intent(getContext(), ResultsSearchActivity.class);
+        intent.putExtra("QUERY", query);
+        startActivity(intent);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }

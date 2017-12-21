@@ -3,13 +3,11 @@ package cnmp.com.howtospeak.views;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
+import cnmp.com.howtospeak.PlayVideoActivity;
 import cnmp.com.howtospeak.R;
 
 /**
@@ -37,7 +35,8 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), PlayVideo.class);
+
+                Intent intent = new Intent(view.getContext(), PlayVideoActivity.class);
                 intent.putExtra("VideoID", videoID);
                 view.getContext().startActivity(intent);
             }
