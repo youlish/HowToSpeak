@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">How to Speak</string>
+    <string name="search">Search</string>
     <string name="introduce_1">Login now for more features</string>
     <string name="introduce_2">Over 50,000 videos\nBuilt-in dictionary and word bank\nPresonal profile with learning stats
     \nVoice recording and playback functions</string>

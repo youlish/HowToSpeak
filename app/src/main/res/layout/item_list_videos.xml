@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.youtube.player.YouTubeThumbnailView
+            android:id="@+id/thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/no_thumbnail" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|bottom"
+            android:layout_margin="@dimen/view_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_video_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                android:padding="5dp"
+                android:text="The 5 resons why you should visit VietNam"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dip"
+                android:background="@drawable/button_primary"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txt_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BEG"
+                    android:textColor="@color/default_text_color" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
