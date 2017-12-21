@@ -29,7 +29,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/no_thumbnail"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerInside"/>
+                    android:scaleType="centerCrop"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
