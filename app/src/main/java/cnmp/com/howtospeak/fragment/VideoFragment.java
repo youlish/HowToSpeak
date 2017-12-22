@@ -1,5 +1,6 @@
 package cnmp.com.howtospeak.fragment;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,13 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.util.ArrayList;
+
 import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.PlayVideoActivity;
+import cnmp.com.howtospeak.model.Video;
+import cnmp.com.howtospeak.model.VideoModel;
+import cnmp.com.howtospeak.model.responses.ListVideo;
 
 /**
  * Created by Dung on 12/14/2017.
@@ -26,6 +32,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         initialize(DeveloperKey.DEVELOPER_KEY,this);
+
     }
 
     @Override
@@ -45,7 +52,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
             this.videoId = videoId;
             this.timeStart = timeStart;
             if(player != null){
-                player.cueVideo(videoId);
+                player.loadVideo(videoId, timeStart);
             }
 
         }

@@ -11,11 +11,12 @@ import java.util.ArrayList;
 
 import cnmp.com.howtospeak.adapter.RecyclerViewVideoAdapter;
 import cnmp.com.howtospeak.model.Video;
+import cnmp.com.howtospeak.model.responses.ListVideo;
 
 public class ResultsSearchActivity extends AppCompatActivity {
 
     private String query;
-    private ArrayList<Video> listVideos = new ArrayList<>();
+    public static ArrayList<Video> listVideos = new ArrayList<>();
     private RecyclerView recyclerVideos;
     private RecyclerViewVideoAdapter viewVideoAdapter;
 
@@ -42,7 +43,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
         showResults(query);
 
     }
-
+    public static ArrayList<Video> getListVideo(){return listVideos;}
     private void showResults(String query) {
         listVideos.add(new Video("The 5 resons why you should visit VietNam", "BEG", "Y_UmWdcTrrc"));
         listVideos.add(new Video("The 5 resons why you should visit VietNam", "INT", "1KhZKNZO8mQ"));

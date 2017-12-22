@@ -10,27 +10,37 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 
+import java.util.ArrayList;
+
 import cnmp.com.howtospeak.fragment.VideoFragment;
+import cnmp.com.howtospeak.model.Video;
+import cnmp.com.howtospeak.model.VideoModel;
+import cnmp.com.howtospeak.model.responses.ListVideo;
 
 /**
  * Created by Dung on 12/14/2017.
  */
 
-public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener{
+
+public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener{
     /**Khoảng thời gian hoạt hình trượt lên trong video theo chân dung*/
+
     private static final int ANIMATION_DURATION_MILLIS = 300;
-    /**Khoảng đệm giữa danh sách video và video theo hướng ngang.*/
+    /**
+     * Khoảng đệm giữa danh sách video và video theo hướng ngang.
+     */
     private static final int LANDSCAPE_VIDEO_PADDING_DP = 5;
-    /**Mã yêu cầu khi gọi startActivityForResult để phục hồi từ lỗi dịch vụ API.*/
+    /**
+     * Mã yêu cầu khi gọi startActivityForResult để phục hồi từ lỗi dịch vụ API.
+     */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private VideoFragment videoFragment;
@@ -38,24 +48,42 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     //private View closeButton;
     private boolean isFullscreen;
     private String videoId;
+
     private int second;
     private int position;
+
+    private Button btnRepeatSentence;
+    private Button btnNextVideo;
+    private Button btnPreviousVideo;
+    private final double DEFAULT_BUTTON_ALPHA = 0.7;
+    private ArrayList<Video> listVideos;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
         videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
 
+        btnNextVideo = findViewById(R.id.btn_next_video);
+        btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
+        btnPreviousVideo = findViewById(R.id.btn_previous_video);
+
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
         videoBox.setVisibility(View.INVISIBLE);
         Intent intent = getIntent();
-        videoId = intent.getExtras().getString("VideoID");
+        //videoId = intent.getExtras().getString("VideoID");
+
         second = intent.getExtras().getInt("Second");
-        position = intent.getExtras().getInt(" position");
+        position = intent.getExtras().getInt("Position");
+        listVideos = ResultsSearchActivity.getListVideo();
+        videoId = listVideos.get(position).getVideoId();
+        //listVideos = (ArrayList<VideoModel>) intent.getSerializableExtra("listVideoModel");
         videoFragment.setVideoId(videoId,second);
+
         if(videoBox.getVisibility() != View.VISIBLE){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+
                 videoBox.setTranslationY(videoBox.getHeight());
             }
             videoBox.setVisibility(View.VISIBLE);
@@ -63,15 +91,24 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         if (videoBox.getTranslationY() > 0) {
             videoBox.animate().translationY(0).setDuration(ANIMATION_DURATION_MILLIS);
         }
-        layout();
 
+        //setup button control video
+        btnNextVideo.setOnClickListener(this);
+        btnNextVideo.setTag(DEFAULT_BUTTON_ALPHA);
+        btnRepeatSentence.setOnClickListener(this);
+        btnRepeatSentence.setTag(DEFAULT_BUTTON_ALPHA);
+        btnPreviousVideo.setOnClickListener(this);
+        btnPreviousVideo.setTag(DEFAULT_BUTTON_ALPHA);
+
+        layout();
         checkYouTubeApi();
     }
-    private void checkYouTubeApi(){
+
+    private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
-        if(errorReason .isUserRecoverableError()){
+        if (errorReason.isUserRecoverableError()) {
             errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
-        }else if(errorReason != YouTubeInitializationResult.SUCCESS){
+        } else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             String errorMessage =
                     String.format(getString(R.string.error_player), errorReason.toString());
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
@@ -96,28 +133,30 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     public void onFullscreen(boolean b) {
         layout();
     }
-    private void layout(){
-        boolean isPortrait =  getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-//        closeButton.setVisibility(isPortrait ? View.VISIBLE : View.GONE);
-        if(isFullscreen){
-            videoBox.setTranslationY(0);
-            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.MATCH_PARENT);
-            setLayoutSizeAndGravity(videoBox,  ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.MATCH_PARENT, Gravity.TOP | Gravity.LEFT);
-        }else if(isPortrait){
 
-            setLayoutSize(videoFragment.getView(),  ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
-            setLayoutSizeAndGravity(videoBox,  ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP);
-        }else{
+    private void layout() {
+        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+//        closeButton.setVisibility(isPortrait ? View.VISIBLE : View.GONE);
+        if (isFullscreen) {
+            videoBox.setTranslationY(0);
+            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.TOP | Gravity.LEFT);
+        } else if (isPortrait) {
+
+            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP);
+        } else {
             videoBox.setTranslationY(0); // Reset any translation that was applied in portrait.
             int screenWidth = dpToPx(getResources().getConfiguration().screenWidthDp);
 
             //int videoWidth = screenWidth - screenWidth / 4 - dpToPx(LANDSCAPE_VIDEO_PADDING_DP);
-            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
-            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT,
+            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
                     Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         }
     }
-//    public void onClickClose(@SuppressWarnings("unused") View view){
+
+    //    public void onClickClose(@SuppressWarnings("unused") View view){
 //        videoFragment.pause();
 //        ViewPropertyAnimator animator = videoBox.animate()
 //                .translationYBy(videoBox.getHeight())
@@ -147,12 +186,14 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private int dpToPx(int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
+
     private static void setLayoutSize(View view, int width, int height) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = width;
         params.height = height;
         view.setLayoutParams(params);
     }
+
     private static void setLayoutSizeAndGravity(View view, int width, int height, int gravity) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
         params.width = width;
@@ -175,5 +216,35 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
 
         return (hours == 0 ? "" : hours + ":")
                 + String.format("%02d:%02d", minutes % 60, seconds % 60);
+    }
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        double tag = (double) view.getTag();
+        switch (id) {
+            case R.id.btn_repeat_sentence:
+                if (tag == DEFAULT_BUTTON_ALPHA) {
+                    tag = 1;
+                } else {
+                    tag = DEFAULT_BUTTON_ALPHA;
+                }
+                break;
+            case R.id.btn_previous_video:
+                if(position >= listVideos.size()){
+                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0 ,0);
+                    toast.show();
+                }else {
+                    position += 1;
+                    videoFragment.setVideoId(listVideos.get(position).getVideoId(), second);
+                }
+
+                break;
+            case R.id.btn_next_video:
+
+                break;
+        }
+        view.setTag(tag);
+        view.setAlpha((float) tag);
     }
 }

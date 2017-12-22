@@ -6,15 +6,63 @@
 
     <LinearLayout
         android:id="@+id/video_box"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
+
         <fragment
-            class="cnmp.com.howtospeak.fragment.VideoFragment"
             android:id="@+id/video_fragment_container"
+            class="cnmp.com.howtospeak.fragment.VideoFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorBlack"
+            android:paddingLeft="@dimen/view_margin"
+            android:paddingRight="@dimen/view_margin">
+
+            <Button
+                android:id="@+id/btn_next_video"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/view_margin"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@color/colorBlack"
+                android:drawableLeft="@drawable/ic_previous"
+                android:text="@string/previous"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/btn_repeat_sentence"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/view_margin"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@color/colorBlack"
+                android:drawableLeft="@drawable/ic_repeat"
+                android:text="@string/repeat_sentence"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+
+
+            <Button
+                android:id="@+id/btn_previous_video"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:alpha="0.7"
+                android:background="@color/colorBlack"
+                android:drawableLeft="@drawable/ic_next"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
 
     </LinearLayout>
 </merge>
