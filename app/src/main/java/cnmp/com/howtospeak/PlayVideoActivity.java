@@ -24,6 +24,7 @@ import cnmp.com.howtospeak.adapter.ListSubtitleAdapter;
 import cnmp.com.howtospeak.fragment.VideoFragment;
 import cnmp.com.howtospeak.model.Subtitle;
 import cnmp.com.howtospeak.network.GetAPI;
+import cnmp.com.howtospeak.utils.StringUtil;
 
 /**
  * Created by Dung on 12/14/2017.
@@ -52,9 +53,11 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private Button btnNextVideo;
     private Button btnPreviousVideo;
     private final double DEFAULT_BUTTON_ALPHA = 0.7;
-    private ListView listSubtitle;
+    private ListView listViewSubtitle;
     private ListSubtitleAdapter listSubtitleAdapter;
-    private ArrayList<Subtitle> subtitleArrayList = new ArrayList<>();
+    private ArrayList<Subtitle> arrayListSubtitle = new ArrayList<>();
+
+    private ArrayList<Long> arrayListTime = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,9 +79,9 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
         btnPreviousVideo = findViewById(R.id.btn_previous_video);
 
-        listSubtitle = findViewById(R.id.listSubtitlte);
-        listSubtitleAdapter = new ListSubtitleAdapter(this, R.layout.item_list_subtitle, subtitleArrayList);
-        listSubtitle.setAdapter(listSubtitleAdapter);
+        listViewSubtitle = findViewById(R.id.listSubtitlte);
+        listSubtitleAdapter = new ListSubtitleAdapter(this, R.layout.item_list_subtitle, arrayListSubtitle);
+        listViewSubtitle.setAdapter(listSubtitleAdapter);
 
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
@@ -106,11 +109,41 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         layout();
         checkYouTubeApi();
         loadSubtitle(videoId);
+
+        //scroll list view at miliseconds
+        scrollListViewByTime(StringUtil.stringToMilis("00:01:35,939"));
     }
 
     private void loadSubtitle(String videoId) {
-        subtitleArrayList = GetAPI.getListSubtitleByVideoId(videoId).getListSub();
-        listSubtitleAdapter.refreshData(subtitleArrayList);
+        arrayListSubtitle = GetAPI.getListSubtitleByVideoId(videoId).getListSub();
+        listSubtitleAdapter.refreshData(arrayListSubtitle);
+        for (int i = 0; i < arrayListSubtitle.size(); i++) {
+            String s = arrayListSubtitle.get(i).getStart();
+            arrayListTime.add(i, StringUtil.stringToMilis(s));
+        }
+    }
+
+    private void scrollListViewByTime(long ms){
+        int position = getPositionByTime(ms);
+        for (int i = 0; i < arrayListSubtitle.size(); i++) {
+            if (i == position){
+                arrayListSubtitle.get(i).setPlaying(true);
+            }else {
+                arrayListSubtitle.get(i).setPlaying(false);
+            }
+        }
+        listViewSubtitle.smoothScrollToPosition(position);
+        listSubtitleAdapter.refreshData(arrayListSubtitle);
+    }
+
+    private int getPositionByTime(long ms) {
+        int position = 0;
+        for (int i = 0; i < arrayListTime.size(); i++) {
+            if (ms >= arrayListTime.get(i)) {
+                position = i;
+            } else break;
+        }
+        return position;
     }
 
     private void checkYouTubeApi() {
