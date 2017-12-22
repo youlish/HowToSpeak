@@ -1,9 +1,11 @@
-package cnmp.com.howtospeak.model;
+package cnmp.com.howtospeak.model.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import cnmp.com.howtospeak.model.Subtitle;
 
 /**
  * Created by hinh1 on 12/22/2017.
