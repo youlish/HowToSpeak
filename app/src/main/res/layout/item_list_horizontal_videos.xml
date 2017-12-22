@@ -23,19 +23,21 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal">
 
-                <com.google.android.youtube.player.YouTubeThumbnailView
-                    android:id="@+id/thumbnail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/no_thumbnail"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|bottom"
                     android:background="@android:drawable/screen_background_dark_transparent"
                     android:orientation="vertical">
+
+                <com.google.android.youtube.player.YouTubeThumbnailView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/no_thumbnail"
+                    android:adjustViewBounds="true"
+                        android:scaleType="centerInside"/>
 
                     <TextView
                         android:id="@+id/txt_video_title"

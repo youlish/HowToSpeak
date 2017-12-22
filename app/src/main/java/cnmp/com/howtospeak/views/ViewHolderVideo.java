@@ -35,6 +35,7 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(view.getContext(), PlayVideoActivity.class);
                 intent.putExtra("VideoID", videoID);
                 view.getContext().startActivity(intent);
