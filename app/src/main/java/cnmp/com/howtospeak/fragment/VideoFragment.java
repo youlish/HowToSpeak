@@ -19,7 +19,7 @@ import cnmp.com.howtospeak.PlayVideoActivity;
 public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener{
     private YouTubePlayer player;
     private String videoId;
-
+    private int timeStart;
     public static VideoFragment newInstance(){return new VideoFragment();}
 
     @Override
@@ -40,9 +40,10 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
             player.release();
         }
     }
-    public void setVideoId(String videoId){
+    public void setVideoId(String videoId, int timeStart ){
         if(videoId != null && !videoId.equals(this.videoId)){
             this.videoId = videoId;
+            this.timeStart = timeStart;
             if(player != null){
                 player.cueVideo(videoId);
             }
@@ -62,7 +63,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
         player.setOnFullscreenListener((PlayVideoActivity) getActivity());
         if(!b && videoId != null){
-            player.cueVideo(videoId);
+            player.loadVideo(videoId,timeStart);
         }
     }
 

@@ -1,14 +1,18 @@
 package cnmp.com.howtospeak;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -21,7 +25,7 @@ import cnmp.com.howtospeak.fragment.VideoFragment;
  * Created by Dung on 12/14/2017.
  */
 
-public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener {
+public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener{
     /**Khoảng thời gian hoạt hình trượt lên trong video theo chân dung*/
     private static final int ANIMATION_DURATION_MILLIS = 300;
     /**Khoảng đệm giữa danh sách video và video theo hướng ngang.*/
@@ -34,6 +38,8 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     //private View closeButton;
     private boolean isFullscreen;
     private String videoId;
+    private int second;
+    private int position;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +51,9 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         videoBox.setVisibility(View.INVISIBLE);
         Intent intent = getIntent();
         videoId = intent.getExtras().getString("VideoID");
-        videoFragment.setVideoId(videoId);
+        second = intent.getExtras().getInt("Second");
+        position = intent.getExtras().getInt(" position");
+        videoFragment.setVideoId(videoId,second);
         if(videoBox.getVisibility() != View.VISIBLE){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
                 videoBox.setTranslationY(videoBox.getHeight());
@@ -69,7 +77,6 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,5 +159,21 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         params.height = height;
         params.gravity = gravity;
         view.setLayoutParams(params);
+    }
+
+    private static final int parseInt(String intString, int defaultValue) {
+        try {
+            return intString != null ? Integer.valueOf(intString) : defaultValue;
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+    private String formatTime(int millis) {
+        int seconds = millis / 1000;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        return (hours == 0 ? "" : hours + ":")
+                + String.format("%02d:%02d", minutes % 60, seconds % 60);
     }
 }
