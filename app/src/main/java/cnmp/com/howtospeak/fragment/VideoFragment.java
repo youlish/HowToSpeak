@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.PlayVideoActivity;
-import cnmp.com.howtospeak.model.Video;
 import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.model.responses.ListVideo;
 

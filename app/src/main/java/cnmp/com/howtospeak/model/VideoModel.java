@@ -25,6 +25,12 @@ public class VideoModel implements Serializable{
     @SerializedName("title")
     @Expose
     private String title;
+    private int timeStart;
+    public VideoModel(String title, Integer level, String id) {
+        this.id = id;
+        this.level = level;
+        this.title = title;
+    }
 
     public Integer getCategoryId() {
         return categoryId;
@@ -65,4 +71,8 @@ public class VideoModel implements Serializable{
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getTimeStart(){return timeStart;}
+
+    public void setTimeStart(int timeStart){this.timeStart = timeStart;}
 }

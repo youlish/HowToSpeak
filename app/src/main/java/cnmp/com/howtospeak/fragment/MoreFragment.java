@@ -33,10 +33,9 @@ public class MoreFragment extends Fragment {
         listViewOption = contentView.findViewById(R.id.listOption);
         optionArrayList = new ArrayList<>();
         listViewOptionsAdapter = new ListViewOptionsAdapter(getContext(), R.layout.item_list_options, optionArrayList);
-
         listViewOption.setAdapter(listViewOptionsAdapter);
-
         initOption();
+
         return contentView;
     }
 

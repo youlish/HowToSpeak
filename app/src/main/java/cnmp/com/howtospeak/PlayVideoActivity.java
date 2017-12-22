@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -13,17 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 
 import java.util.ArrayList;
-
 import cnmp.com.howtospeak.fragment.VideoFragment;
-import cnmp.com.howtospeak.model.Video;
 import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.model.responses.ListVideo;
+import cnmp.com.howtospeak.adapter.ListSubtitleAdapter;
+import cnmp.com.howtospeak.fragment.VideoFragment;
+import cnmp.com.howtospeak.model.Subtitle;
+import cnmp.com.howtospeak.network.GetAPI;
 
 /**
  * Created by Dung on 12/14/2017.
@@ -56,33 +60,39 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private Button btnNextVideo;
     private Button btnPreviousVideo;
     private final double DEFAULT_BUTTON_ALPHA = 0.7;
-    private ArrayList<Video> listVideos;
-
+    private ListView listSubtitle;
+    private ListSubtitleAdapter listSubtitleAdapter;
+    private ArrayList<Subtitle> subtitleArrayList = new ArrayList<>();
+    private ArrayList<VideoModel> listVideos;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
+        Intent intent = getIntent();
+        position = intent.getExtras().getInt("Position");
+        listVideos = ResultsSearchActivity.getListVideos();
+        videoId = listVideos.get(position).getId();
 
         btnNextVideo = findViewById(R.id.btn_next_video);
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
         btnPreviousVideo = findViewById(R.id.btn_previous_video);
 
+        listSubtitle = findViewById(R.id.listSubtitlte);
+        listSubtitleAdapter = new ListSubtitleAdapter(this, R.layout.item_list_subtitle, subtitleArrayList);
+        listSubtitle.setAdapter(listSubtitleAdapter);
+
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
         videoBox.setVisibility(View.INVISIBLE);
-        Intent intent = getIntent();
-        //videoId = intent.getExtras().getString("VideoID");
-
-        second = intent.getExtras().getInt("Second");
-        position = intent.getExtras().getInt("Position");
-        listVideos = ResultsSearchActivity.getListVideo();
-        videoId = listVideos.get(position).getVideoId();
-        //listVideos = (ArrayList<VideoModel>) intent.getSerializableExtra("listVideoModel");
         videoFragment.setVideoId(videoId,second);
-
-        if(videoBox.getVisibility() != View.VISIBLE){
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (videoBox.getVisibility() != View.VISIBLE) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
                 videoBox.setTranslationY(videoBox.getHeight());
             }
@@ -102,6 +112,12 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
 
         layout();
         checkYouTubeApi();
+        loadSubtitle(videoId);
+    }
+
+    private void loadSubtitle(String videoId) {
+        subtitleArrayList = GetAPI.getListSubtitleByVideoId(videoId).getListSub();
+        listSubtitleAdapter.refreshData(subtitleArrayList);
     }
 
     private void checkYouTubeApi() {
@@ -236,7 +252,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
                     toast.show();
                 }else {
                     position += 1;
-                    videoFragment.setVideoId(listVideos.get(position).getVideoId(), second);
+                    videoFragment.setVideoId(listVideos.get(position).getId(), second);
                 }
 
                 break;
