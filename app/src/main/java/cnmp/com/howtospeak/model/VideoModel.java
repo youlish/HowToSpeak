@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class VideoModel {
     @SerializedName("categoryId")
     @Expose
-    private String categoryId;
+    private Integer categoryId;
     @SerializedName("channelId")
     @Expose
     private String channelId;
@@ -23,4 +23,44 @@ public class VideoModel {
     @SerializedName("title")
     @Expose
     private String title;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
