@@ -16,7 +16,7 @@ public class Subtitle {
     private Long id;
     @SerializedName("num")
     @Expose
-    private Long num;
+    private Integer num;
     @SerializedName("start")
     @Expose
     private String start;
@@ -53,11 +53,11 @@ public class Subtitle {
         this.id = id;
     }
 
-    public Long getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(Long num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
