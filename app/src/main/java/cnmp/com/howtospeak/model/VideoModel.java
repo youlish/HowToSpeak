@@ -3,11 +3,13 @@ package cnmp.com.howtospeak.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by hinh1 on 12/22/2017.
  */
 
-public class VideoModel {
+public class VideoModel implements Serializable{
     @SerializedName("categoryId")
     @Expose
     private Integer categoryId;
@@ -23,7 +25,7 @@ public class VideoModel {
     @SerializedName("title")
     @Expose
     private String title;
-
+    private int timeStart;
     public VideoModel(String title, Integer level, String id) {
         this.id = id;
         this.level = level;
@@ -69,4 +71,8 @@ public class VideoModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getTimeStart(){return timeStart;}
+
+    public void setTimeStart(int timeStart){this.timeStart = timeStart;}
 }

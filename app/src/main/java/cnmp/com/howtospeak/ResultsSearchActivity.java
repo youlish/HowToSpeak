@@ -10,12 +10,13 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 
 import cnmp.com.howtospeak.adapter.RecyclerViewVideoAdapter;
+import cnmp.com.howtospeak.model.responses.ListVideo;
 import cnmp.com.howtospeak.model.VideoModel;
 
-public class ResultsSearchActivity extends AppCompatActivity {
 
+public class ResultsSearchActivity extends AppCompatActivity {
     private String query;
-    private ArrayList<VideoModel> listVideos = new ArrayList<>();
+    public static ArrayList<VideoModel> listVideos = new ArrayList<>();
     private RecyclerView recyclerVideos;
     private RecyclerViewVideoAdapter viewVideoAdapter;
 
@@ -41,15 +42,9 @@ public class ResultsSearchActivity extends AppCompatActivity {
         showResults(query);
 
     }
-
+    public static ArrayList<VideoModel> getListVideos(){return listVideos;}
     private void showResults(String query) {
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "FgVmAq22HAM"));
-        listVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "FgVmAq22HAM"));
+
 
         viewVideoAdapter.notifyDataSetChanged();
     }

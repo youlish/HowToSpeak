@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import cnmp.com.howtospeak.adapter.ListSubtitleAdapter;
 import cnmp.com.howtospeak.fragment.VideoFragment;
 import cnmp.com.howtospeak.model.Subtitle;
+import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.network.GetAPI;
 import cnmp.com.howtospeak.utils.StringUtil;
 
@@ -30,10 +31,10 @@ import cnmp.com.howtospeak.utils.StringUtil;
  * Created by Dung on 12/14/2017.
  */
 
+
 public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener {
-    /**
-     * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
-     */
+    /**Khoảng thời gian hoạt hình trượt lên trong video theo chân dung*/
+
     private static final int ANIMATION_DURATION_MILLIS = 300;
     /**
      * Khoảng đệm giữa danh sách video và video theo hướng ngang.
@@ -49,6 +50,10 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     //private View closeButton;
     private boolean isFullscreen;
     private String videoId;
+
+    private int second;
+    private int position;
+
     private Button btnRepeatSentence;
     private Button btnNextVideo;
     private Button btnPreviousVideo;
@@ -56,7 +61,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private ListView listViewSubtitle;
     private ListSubtitleAdapter listSubtitleAdapter;
     private ArrayList<Subtitle> arrayListSubtitle = new ArrayList<>();
-
+    private ArrayList<VideoModel> listVideos;
     private ArrayList<Long> arrayListTime = new ArrayList<>();
 
     @Override
@@ -68,12 +73,11 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-
-        Intent intent = getIntent();
-        videoId = intent.getExtras().getString("VideoID");
-
         videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
+        Intent intent = getIntent();
+        position = intent.getExtras().getInt("Position");
+        listVideos = ResultsSearchActivity.getListVideos();
+        videoId = listVideos.get(position).getId();
 
         btnNextVideo = findViewById(R.id.btn_next_video);
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
@@ -86,10 +90,10 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
         videoBox.setVisibility(View.INVISIBLE);
-
-        videoFragment.setVideoId(videoId);
+        videoFragment.setVideoId(videoId,second);
         if (videoBox.getVisibility() != View.VISIBLE) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
                 videoBox.setTranslationY(videoBox.getHeight());
             }
             videoBox.setVisibility(View.VISIBLE);
@@ -156,7 +160,6 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -245,6 +248,21 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         view.setLayoutParams(params);
     }
 
+    private static final int parseInt(String intString, int defaultValue) {
+        try {
+            return intString != null ? Integer.valueOf(intString) : defaultValue;
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+    private String formatTime(int millis) {
+        int seconds = millis / 1000;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        return (hours == 0 ? "" : hours + ":")
+                + String.format("%02d:%02d", minutes % 60, seconds % 60);
+    }
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -258,12 +276,21 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
                 }
                 break;
             case R.id.btn_previous_video:
+                if(position >= listVideos.size()){
+                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0 ,0);
+                    toast.show();
+                }else {
+                    position += 1;
+                    videoFragment.setVideoId(listVideos.get(position).getId(), second);
+                }
+
                 break;
             case R.id.btn_next_video:
+
                 break;
         }
         view.setTag(tag);
         view.setAlpha((float) tag);
-
     }
 }

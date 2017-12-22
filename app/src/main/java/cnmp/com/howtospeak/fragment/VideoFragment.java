@@ -1,5 +1,6 @@
 package cnmp.com.howtospeak.fragment;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,12 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.util.ArrayList;
+
 import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.PlayVideoActivity;
+import cnmp.com.howtospeak.model.VideoModel;
+import cnmp.com.howtospeak.model.responses.ListVideo;
 
 /**
  * Created by Dung on 12/14/2017.
@@ -19,13 +24,14 @@ import cnmp.com.howtospeak.PlayVideoActivity;
 public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener{
     private YouTubePlayer player;
     private String videoId;
-
+    private int timeStart;
     public static VideoFragment newInstance(){return new VideoFragment();}
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         initialize(DeveloperKey.DEVELOPER_KEY,this);
+
     }
 
     @Override
@@ -40,11 +46,12 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
             player.release();
         }
     }
-    public void setVideoId(String videoId){
+    public void setVideoId(String videoId, int timeStart ){
         if(videoId != null && !videoId.equals(this.videoId)){
             this.videoId = videoId;
+            this.timeStart = timeStart;
             if(player != null){
-                player.cueVideo(videoId);
+                player.loadVideo(videoId, timeStart);
             }
 
         }
@@ -62,7 +69,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
         player.setOnFullscreenListener((PlayVideoActivity) getActivity());
         if(!b && videoId != null){
-            player.cueVideo(videoId);
+            player.loadVideo(videoId,timeStart);
         }
     }
 
