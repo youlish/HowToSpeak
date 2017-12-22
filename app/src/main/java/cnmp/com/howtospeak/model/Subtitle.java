@@ -23,9 +23,9 @@ public class Subtitle {
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("videiId")
+    @SerializedName("videoId")
     @Expose
-    private String videiId;
+    private String videoId;
 
     private Boolean isPlaying;
 
@@ -77,11 +77,11 @@ public class Subtitle {
         this.text = text;
     }
 
-    public String getVideiId() {
-        return videiId;
+    public String getVideoId() {
+        return videoId;
     }
 
-    public void setVideiId(String videiId) {
-        this.videiId = videiId;
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 }
