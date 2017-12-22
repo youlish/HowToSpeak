@@ -16,16 +16,16 @@ public class Subtitle {
     private Long id;
     @SerializedName("num")
     @Expose
-    private Long num;
+    private Integer num;
     @SerializedName("start")
     @Expose
     private String start;
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("videiId")
+    @SerializedName("videoId")
     @Expose
-    private String videiId;
+    private String videoId;
 
     private Boolean isPlaying;
 
@@ -53,11 +53,11 @@ public class Subtitle {
         this.id = id;
     }
 
-    public Long getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(Long num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
@@ -77,11 +77,11 @@ public class Subtitle {
         this.text = text;
     }
 
-    public String getVideiId() {
-        return videiId;
+    public String getVideoId() {
+        return videoId;
     }
 
-    public void setVideiId(String videiId) {
-        this.videiId = videiId;
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 }

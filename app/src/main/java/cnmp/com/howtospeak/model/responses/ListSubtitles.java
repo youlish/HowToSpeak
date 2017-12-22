@@ -10,7 +10,7 @@ import cnmp.com.howtospeak.model.Subtitle;
 /**
  * Created by hinh1 on 12/22/2017.
  */
-
+// request list sub
 public class ListSubtitles {
     @SerializedName("listSub")
     @Expose
