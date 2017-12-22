@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Application extends MultiDexApplication {
     public static Retrofit mRetrofit;
     private static Context mContext;
-    public static final String BASE_API = "http://gufuapi.toivivu.com/";
+    public static final String BASE_API = "http://b86f7b86.ngrok.io";
 
     public static APISever API;
 

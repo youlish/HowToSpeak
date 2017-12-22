@@ -24,6 +24,12 @@ public class VideoModel {
     @Expose
     private String title;
 
+    public VideoModel(String title, Integer level, String id) {
+        this.id = id;
+        this.level = level;
+        this.title = title;
+    }
+
     public Integer getCategoryId() {
         return categoryId;
     }

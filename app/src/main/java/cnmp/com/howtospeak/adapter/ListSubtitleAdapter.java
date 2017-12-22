@@ -51,19 +51,27 @@ public class ListSubtitleAdapter extends ArrayAdapter<Subtitle> {
         final Subtitle subtitle = subtitleArrayList.get(position);
 
         if (subtitle != null) {
-            if (subtitle.getPlaying()) {
-                viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorWhite));
-                viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorBlack));
-            } else {
-
-                viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorBlack));
-                viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorWhite));
-            }
+            //if (subtitle.getPlaying()) {
+              //  viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorWhite));
+                //viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorBlack));
+            //} else {
+//                viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorBlack));
+  //              viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorWhite));
+            //}
 
             viewHolder.txtSubtitle.setText(subtitle.getText());
         }
 
         return convertView;
+    }
+
+    public void refreshData(ArrayList<Subtitle> arrayList){
+        subtitleArrayList.addAll(arrayList);
+        notifyDataSetChanged();
+    }
+    @Override
+    public int getCount() {
+        return subtitleArrayList.size();
     }
 
     public class ViewHolder {
