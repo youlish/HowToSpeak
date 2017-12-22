@@ -20,6 +20,11 @@
     <string name="instagram">Instagram</string>
     <string name="feed_back">Feedback</string>
     <string name="about">About</string>
+    <string name="repeat_sentence">Repeat Sentence</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="record">Record</string>
+    <string name="replay_video">Replay Video</string>
     <string name="category">Category</string>
 
     <string name="featured_videos">Featured Videos</string>

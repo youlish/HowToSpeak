@@ -23,6 +23,13 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal">
 
+                <com.google.android.youtube.player.YouTubeThumbnailView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_thumbnail" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -31,19 +38,12 @@
                     android:background="@android:drawable/screen_background_dark_transparent"
                     android:orientation="vertical">
 
-                    <com.google.android.youtube.player.YouTubeThumbnailView
-                        android:id="@+id/thumbnail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/no_thumbnail"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerInside"/>
 
                     <TextView
                         android:id="@+id/txt_video_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lines="3"
+                        android:lines="2"
                         android:padding="5dp"
                         android:text="The 5 resons why you should visit VietNam"
                         android:textColor="#FFFFFF"
@@ -62,7 +62,7 @@
 
             <LinearLayout
                 android:layout_width="50dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="2dip"
                 android:background="@drawable/button_primary"
                 android:gravity="center">
