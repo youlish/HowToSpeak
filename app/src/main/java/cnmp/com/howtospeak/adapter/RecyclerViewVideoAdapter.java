@@ -17,7 +17,7 @@ import java.util.Map;
 
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.model.DeveloperKey;
-import cnmp.com.howtospeak.model.Video;
+import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.views.ViewHolderVideo;
 
 /**
@@ -25,14 +25,14 @@ import cnmp.com.howtospeak.views.ViewHolderVideo;
  */
 
 public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVideo> {
-    private ArrayList<Video> list;
+    private ArrayList<VideoModel> list;
     private List<View> entryView;
     private Map<YouTubeThumbnailView, YouTubeThumbnailLoader> thumbnailViewToLoaderMap;
     private LayoutInflater inflater;
     private ThumbnailListener thumbnailListener;
     private boolean labelsVisible;
 
-    public RecyclerViewVideoAdapter(Context context, ArrayList<Video> data) {
+    public RecyclerViewVideoAdapter(Context context, ArrayList<VideoModel> data) {
         this.list = data;
         entryView = new ArrayList<View>();
         thumbnailViewToLoaderMap = new HashMap<YouTubeThumbnailView, YouTubeThumbnailLoader>();
@@ -65,21 +65,24 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVid
 
     @Override
     public void onBindViewHolder(ViewHolderVideo holder, int position) {
-        Video video = list.get(position);
+        VideoModel video = list.get(position);
         holder.txtLevel.setText(video.getLevel());
         YouTubeThumbnailLoader loader = thumbnailViewToLoaderMap.get(holder.thumbai);
         holder.thumbai.initialize(DeveloperKey.DEVELOPER_KEY, thumbnailListener);
         if (loader == null) {
-            holder.thumbai.setTag(video.getVideoId());
+            holder.thumbai.setTag(video.getId());
         } else {
-            holder.thumbai.setTag(video.getVideoId());
+            holder.thumbai.setTag(video.getId());
             holder.thumbai.setImageResource(R.drawable.loading_thumbnail);
-            loader.setVideo(video.getVideoId());
+            loader.setVideo(video.getId());
         }
-        holder.txtVideoTitle.setText(video.getVideoTitle());
+        holder.txtVideoTitle.setText(video.getTitle());
         holder.txtVideoTitle.setVisibility(labelsVisible ? View.VISIBLE : View.GONE);
-        holder.setVideoID(video.getVideoId());
 
+        holder.setVideoID(video.getId());
+        holder.setVideoPlayTime(25000);
+        holder.setPosition(position);
+        holder.setVideoID(video.getTitle());
     }
 
     @Override

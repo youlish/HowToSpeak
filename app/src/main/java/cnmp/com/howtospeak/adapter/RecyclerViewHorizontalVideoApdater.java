@@ -17,7 +17,7 @@ import java.util.Map;
 
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.model.DeveloperKey;
-import cnmp.com.howtospeak.model.Video;
+import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.views.ViewHolderVideo;
 
 /**
@@ -25,32 +25,35 @@ import cnmp.com.howtospeak.views.ViewHolderVideo;
  */
 
 public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<ViewHolderVideo> {
-    private ArrayList<Video> list;
+    private ArrayList<VideoModel> list;
     private List<View> entryView;
     private Map<YouTubeThumbnailView, YouTubeThumbnailLoader> thumbnailViewToLoaderMap;
     private LayoutInflater inflater;
     private ThumbnailListener thumbnailListener;
     private boolean labelsVisible;
 
-    public RecyclerViewHorizontalVideoApdater(Context context, ArrayList<Video> data){
+    public RecyclerViewHorizontalVideoApdater(Context context, ArrayList<VideoModel> data) {
         this.list = data;
-        entryView  = new ArrayList<View>();
+        entryView = new ArrayList<View>();
         thumbnailViewToLoaderMap = new HashMap<YouTubeThumbnailView, YouTubeThumbnailLoader>();
         inflater = LayoutInflater.from(context);
         thumbnailListener = new ThumbnailListener();
         labelsVisible = true;
     }
-    public void releaseLoaders(){
+
+    public void releaseLoaders() {
         for (YouTubeThumbnailLoader loader : thumbnailViewToLoaderMap.values()) {
             loader.release();
         }
     }
-    public void setLabelVisibility(boolean visible){
+
+    public void setLabelVisibility(boolean visible) {
         labelsVisible = visible;
-        for(View view : entryView){
+        for (View view : entryView) {
             view.findViewById(R.id.txt_video_title).setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
+
     @Override
     public ViewHolderVideo onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -60,23 +63,39 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
         return holder;
     }
 
+    private final int BEGIN_LEVEL = 1;
+    private final int INTERMEDIATE_LEVEL = 2;
+    private final int ADVANCED_LEVEL = 3;
+
     @Override
     public void onBindViewHolder(ViewHolderVideo holder, int position) {
-        Video video = list.get(position);
-        holder.txtLevel.setText(video.getLevel());
+        VideoModel video = list.get(position);
+
+        int level = video.getLevel();
+        switch (level) {
+            case BEGIN_LEVEL:
+                holder.txtLevel.setText("BEG");
+                break;
+            case INTERMEDIATE_LEVEL:
+                holder.txtLevel.setText("INT");
+                break;
+            case ADVANCED_LEVEL:
+                holder.txtLevel.setText("ADV");
+                break;
+        }
         YouTubeThumbnailLoader loader = thumbnailViewToLoaderMap.get(holder.thumbai);
         holder.thumbai.initialize(DeveloperKey.DEVELOPER_KEY, thumbnailListener);
-        if(loader == null){
-            holder.thumbai.setTag(video.getVideoId());
-        }else {
-            holder.thumbai.setTag(video.getVideoId());
+        if (loader == null) {
+            holder.thumbai.setTag(video.getId());
+        } else {
+            holder.thumbai.setTag(video.getId());
             holder.thumbai.setImageResource(R.drawable.loading_thumbnail);
-            loader.setVideo(video.getVideoId());
+            loader.setVideo(video.getId());
 
         }
-        holder.txtVideoTitle.setText(video.getVideoTitle());
+        holder.txtVideoTitle.setText(video.getTitle());
         holder.txtVideoTitle.setVisibility(labelsVisible ? View.VISIBLE : View.GONE);
-        holder.setVideoID(video.getVideoId());
+        holder.setVideoID(video.getId());
 
     }
 
@@ -84,8 +103,9 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
     public int getItemCount() {
         return list.size();
     }
+
     private final class ThumbnailListener implements YouTubeThumbnailView.OnInitializedListener,
-            YouTubeThumbnailLoader.OnThumbnailLoadedListener{
+            YouTubeThumbnailLoader.OnThumbnailLoadedListener {
 
         @Override
         public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
@@ -100,7 +120,7 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
         @Override
         public void onInitializationSuccess(YouTubeThumbnailView view, YouTubeThumbnailLoader loader) {
             loader.setOnThumbnailLoadedListener(this);
-            thumbnailViewToLoaderMap.put(view,loader);
+            thumbnailViewToLoaderMap.put(view, loader);
             view.setImageResource(R.drawable.loading_thumbnail);
             String videoId = (String) view.getTag();
             loader.setVideo(videoId);

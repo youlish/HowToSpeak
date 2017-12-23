@@ -58,11 +58,18 @@
                 android:layout_weight="1"
                 android:alpha="0.7"
                 android:background="@color/colorBlack"
-                android:drawableLeft="@drawable/ic_next"
+                android:drawableRight="@drawable/ic_next"
                 android:text="@string/next"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/listSubtitlte"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
 
     </LinearLayout>
 </merge>
