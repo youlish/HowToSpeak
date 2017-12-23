@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,19 @@ public class ListSubtitleAdapter extends ArrayAdapter<Subtitle> {
         final Subtitle subtitle = subtitleArrayList.get(position);
 
         if (subtitle != null) {
-            //if (subtitle.getPlaying()) {
-              //  viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorWhite));
-                //viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorBlack));
-            //} else {
-//                viewHolder.txtSubtitle.setTextColor(context.getColor(R.color.colorBlack));
-  //              viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorWhite));
-            //}
+            if (subtitle.getPlaying()!=null){
+                if (subtitle.getPlaying()) {
+                    viewHolder.txtSubtitle.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+                    viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorBlack));
+                } else {
+                    viewHolder.txtSubtitle.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                    viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorWhite));
+                }
+            }else {
+                viewHolder.txtSubtitle.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                viewHolder.layoutContent.setBackground(context.getDrawable(R.color.colorWhite));
+            }
+
 
             viewHolder.txtSubtitle.setText(subtitle.getText());
         }
@@ -66,6 +73,7 @@ public class ListSubtitleAdapter extends ArrayAdapter<Subtitle> {
     }
 
     public void refreshData(ArrayList<Subtitle> arrayList){
+        subtitleArrayList.clear();
         subtitleArrayList.addAll(arrayList);
         notifyDataSetChanged();
     }
