@@ -38,7 +38,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     private ListView listViewOption;
     private ListViewOptionsAdapter listViewOptionsAdapter;
     private ArrayList<Option> optionArrayList;
-    private Button btnLogin;
+    public Button btnLogin;
     private GoogleApiClient mGoogleApiClient;
     private Acount acount;
 
