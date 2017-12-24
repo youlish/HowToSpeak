@@ -3,6 +3,8 @@ package cnmp.com.howtospeak.app;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.facebook.FacebookSdk;
+
 import cnmp.com.howtospeak.network.APISever;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,6 +25,7 @@ public class Application extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        FacebookSdk.sdkInitialize(getApplicationContext());
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_API)
                 .addConverterFactory(GsonConverterFactory.create())
