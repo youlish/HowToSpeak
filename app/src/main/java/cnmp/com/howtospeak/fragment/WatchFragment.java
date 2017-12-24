@@ -22,8 +22,9 @@ import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.ResultsSearchActivity;
 import cnmp.com.howtospeak.adapter.RecyclerViewCategoryAdapter;
 import cnmp.com.howtospeak.adapter.RecyclerViewHorizontalVideoApdater;
-import cnmp.com.howtospeak.model.CategoryItem;
+import cnmp.com.howtospeak.model.Category;
 import cnmp.com.howtospeak.model.VideoModel;
+import cnmp.com.howtospeak.network.GetAPI;
 
 public class WatchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private ArrayList<VideoModel> listFeaturedVideos = new ArrayList<>();
@@ -38,7 +39,7 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
     private RecyclerView recyclerRecentlyVideos;
     private RecyclerViewHorizontalVideoApdater recentlyVideoAdapter;
 
-    private ArrayList<CategoryItem> listCategoryItem = new ArrayList<>();
+    private ArrayList<Category> listCategoryItem = new ArrayList<>();
     private RecyclerView recyclerCategory;
     private RecyclerViewCategoryAdapter categoryAdapter;
 
@@ -64,11 +65,11 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
 
         recyclerPopularVideos = contentView.findViewById(R.id.recyclerPopularVideos);
         recyclerPopularVideos.setHasFixedSize(true);
-        popularVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(), listFeaturedVideos);
+        popularVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(), listPopularVideos);
 
         recyclerRecentlyVideos = contentView.findViewById(R.id.recyclerRecentlyVideos);
         recyclerRecentlyVideos.setHasFixedSize(true);
-        recentlyVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(), listFeaturedVideos);
+        recentlyVideoAdapter = new RecyclerViewHorizontalVideoApdater(getContext(), listRecentlyVideos);
 
         recyclerCategory = contentView.findViewById(R.id.reyclerCategory);
         recyclerCategory.setHasFixedSize(true);
@@ -92,7 +93,7 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
         //set up list recently videos
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerRecentlyVideos.setAdapter(popularVideoAdapter);
+        recyclerRecentlyVideos.setAdapter(recentlyVideoAdapter);
         recyclerRecentlyVideos.setLayoutManager(layoutManager);
         initRecentlyVideos();
 
@@ -115,51 +116,40 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void initCategory() {
-        listCategoryItem.add(new CategoryItem("Basic Level", R.drawable.img_1));
-        listCategoryItem.add(new CategoryItem("Intermediate",R.drawable.img_2));
-        listCategoryItem.add(new CategoryItem("Advanced", R.drawable.img_4));
-        listCategoryItem.add(new CategoryItem("TED Talks", R.drawable.img_5));
-        listCategoryItem.add(new CategoryItem("TED-Ed", R.drawable.img_6));
-        listCategoryItem.add(new CategoryItem("CNN", R.drawable.img_3));
-        listCategoryItem.add(new CategoryItem("BBC", R.drawable.img_7));
+        listCategoryItem.clear();
+        listCategoryItem.add(new Category("Basic Level", 1, 0, R.drawable.img_1));
+        listCategoryItem.add(new Category("Intermediate", 2, 0,R.drawable.img_2));
+        listCategoryItem.add(new Category("Advanced", 3, 0, R.drawable.img_4));
+
+        ArrayList<Category> categoryArrayList= GetAPI.getListCategories().getListCategory();
+        Category category=null;
+        for (int i=0;i<categoryArrayList.size();i++){
+            category= categoryArrayList.get(i);
+            category.setStatus(1);
+            category.setResImage(R.drawable.img_5);
+            listCategoryItem.add(category);
+        }
 
         categoryAdapter.notifyDataSetChanged();
     }
 
     private void initFeaturedVideos() {
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listFeaturedVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
+        listFeaturedVideos.clear();
+        listFeaturedVideos.addAll(GetAPI.getListVideoByCategoryId(27).getListVideo());
 
         featuredVideosAdapter.notifyDataSetChanged();
     }
 
     private void initPopularVideos() {
-
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listPopularVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
+        listPopularVideos.clear();
+        listPopularVideos.addAll(GetAPI.getListVideoByCategoryId(24).getListVideo());
 
         popularVideoAdapter.notifyDataSetChanged();
     }
 
     private void initRecentlyVideos() {
-
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 2, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 3, "XjYKsWAlR3M"));
-        listRecentlyVideos.add(new VideoModel("The 5 resons why you should visit VietNam", 1, "XjYKsWAlR3M"));
+        listRecentlyVideos.clear();
+        listRecentlyVideos.addAll(GetAPI.getListVideoByCategoryId(25).getListVideo());
         recentlyVideoAdapter.notifyDataSetChanged();
     }
 
