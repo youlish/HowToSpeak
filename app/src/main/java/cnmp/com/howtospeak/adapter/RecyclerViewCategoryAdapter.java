@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import cnmp.com.howtospeak.R;
-import cnmp.com.howtospeak.model.Category;
+import cnmp.com.howtospeak.model.CategoryItem;
 import cnmp.com.howtospeak.views.ViewHolderCategory;
 
 /**
@@ -16,9 +16,9 @@ import cnmp.com.howtospeak.views.ViewHolderCategory;
  */
 
 public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<ViewHolderCategory> {
-    private ArrayList<Category> list;
+    private ArrayList<CategoryItem> list;
 
-    public RecyclerViewCategoryAdapter(ArrayList<Category> list) {
+    public RecyclerViewCategoryAdapter(ArrayList<CategoryItem> list) {
         this.list = list;
     }
 

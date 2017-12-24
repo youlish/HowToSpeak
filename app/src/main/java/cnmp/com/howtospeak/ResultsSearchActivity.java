@@ -34,6 +34,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
         }
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(R.string.search);
         setSupportActionBar(myToolbar);
 
         Intent intent = getIntent();
@@ -51,19 +52,21 @@ public class ResultsSearchActivity extends AppCompatActivity {
         showResults(query);
 
     }
-    public static ArrayList<VideoModel> getListVideos(){
+
+    public static ArrayList<VideoModel> getListVideos() {
         return listVideos;
-       }
+    }
+
     private void showResults(String query) {
         listVideos.clear();
-        ArrayList<VideoSubItem> listVideoSub= GetAPI.getListVideoSubByText(query).getListVideoSub();
-        VideoModel videoModel=null;
-        for (int i=0; i<listVideoSub.size(); i++){
-            videoModel=listVideoSub.get(i).getVideo();
+        ArrayList<VideoSubItem> listVideoSub = GetAPI.getListVideoSubByText(query).getListVideoSub();
+        VideoModel videoModel = null;
+        for (int i = 0; i < listVideoSub.size(); i++) {
+            videoModel = listVideoSub.get(i).getVideo();
             videoModel.setTimeStart((int) StringUtil.stringToMilis(listVideoSub.get(i).getSub().getStart()));
             listVideos.add(videoModel);
         }
-        Toast.makeText(this,listVideos.size()+"",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, listVideos.size() + "", Toast.LENGTH_LONG).show();
 
         viewVideoAdapter.notifyDataSetChanged();
     }

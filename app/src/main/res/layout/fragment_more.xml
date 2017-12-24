@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/view_margin"
+    android:layout_marginTop="?actionBarSize"
     tools:context="cnmp.com.howtospeak.fragment.MoreFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,12 +13,14 @@
         android:layout_marginBottom="?actionBarSize" />
 
     <Button
+        android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/view_margin"
         android:background="@drawable/button_primary"
-        android:text="@string/login_now"
-        android:textColor="@color/colorWhite" />
+        android:text="Logout"
+        android:textColor="@color/colorWhite"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

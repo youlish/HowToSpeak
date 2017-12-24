@@ -1,20 +1,19 @@
 package cnmp.com.howtospeak.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by henry on 12/10/2017.
+ * Created by hinh1 on 12/24/2017.
  */
 
 public class Category {
+    @SerializedName("categoryName")
+    @Expose
     private String categoryName;
-    private int resImage;
-
-    public int getResImage() {
-        return resImage;
-    }
-
-    public void setResImage(int resImage) {
-        this.resImage = resImage;
-    }
+    @SerializedName("id")
+    @Expose
+    private Long id;
 
     public String getCategoryName() {
         return categoryName;
@@ -24,14 +23,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-
-    public Category() {
-
+    public Long getId() {
+        return id;
     }
 
-    public Category(String categoryName, int resImage) {
-
-        this.categoryName = categoryName;
-        this.resImage = resImage;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

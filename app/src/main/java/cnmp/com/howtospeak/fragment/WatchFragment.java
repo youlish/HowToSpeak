@@ -22,7 +22,7 @@ import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.ResultsSearchActivity;
 import cnmp.com.howtospeak.adapter.RecyclerViewCategoryAdapter;
 import cnmp.com.howtospeak.adapter.RecyclerViewHorizontalVideoApdater;
-import cnmp.com.howtospeak.model.Category;
+import cnmp.com.howtospeak.model.CategoryItem;
 import cnmp.com.howtospeak.model.VideoModel;
 
 public class WatchFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -38,7 +38,7 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
     private RecyclerView recyclerRecentlyVideos;
     private RecyclerViewHorizontalVideoApdater recentlyVideoAdapter;
 
-    private ArrayList<Category> listCategory = new ArrayList<>();
+    private ArrayList<CategoryItem> listCategoryItem = new ArrayList<>();
     private RecyclerView recyclerCategory;
     private RecyclerViewCategoryAdapter categoryAdapter;
 
@@ -72,7 +72,7 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
 
         recyclerCategory = contentView.findViewById(R.id.reyclerCategory);
         recyclerCategory.setHasFixedSize(true);
-        categoryAdapter = new RecyclerViewCategoryAdapter(listCategory);
+        categoryAdapter = new RecyclerViewCategoryAdapter(listCategoryItem);
 
 
         //set up list featured videos
@@ -115,13 +115,13 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void initCategory() {
-        listCategory.add(new Category("Basic Level", R.mipmap.ic_launcher));
-        listCategory.add(new Category("Intermediate", R.mipmap.ic_launcher));
-        listCategory.add(new Category("Advanced", R.mipmap.ic_launcher));
-        listCategory.add(new Category("TED Talks", R.mipmap.ic_launcher));
-        listCategory.add(new Category("TED-Ed", R.mipmap.ic_launcher));
-        listCategory.add(new Category("CNN", R.mipmap.ic_launcher));
-        listCategory.add(new Category("BBC", R.mipmap.ic_launcher));
+        listCategoryItem.add(new CategoryItem("Basic Level", R.drawable.img_1));
+        listCategoryItem.add(new CategoryItem("Intermediate",R.drawable.img_2));
+        listCategoryItem.add(new CategoryItem("Advanced", R.drawable.img_4));
+        listCategoryItem.add(new CategoryItem("TED Talks", R.drawable.img_5));
+        listCategoryItem.add(new CategoryItem("TED-Ed", R.drawable.img_6));
+        listCategoryItem.add(new CategoryItem("CNN", R.drawable.img_3));
+        listCategoryItem.add(new CategoryItem("BBC", R.drawable.img_7));
 
         categoryAdapter.notifyDataSetChanged();
     }

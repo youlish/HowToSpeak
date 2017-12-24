@@ -3,6 +3,7 @@ package cnmp.com.howtospeak.network;
 import java.io.IOException;
 
 import cnmp.com.howtospeak.app.Application;
+import cnmp.com.howtospeak.model.responses.ListCategory;
 import cnmp.com.howtospeak.model.responses.ListSubtitles;
 import cnmp.com.howtospeak.model.responses.ListVideo;
 import cnmp.com.howtospeak.model.responses.ListVideoSub;
@@ -64,6 +65,21 @@ public class GetAPI {
             Call<ListVideoSub> call = Application.API.getListVideoSubByText(text);
             ListVideoSub dataResponse = null;
             Response<ListVideoSub> response = call.execute();
+            if(response != null){
+                dataResponse = response.body();
+            }
+            return dataResponse;
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ListCategory getListCategories(){
+        try{
+            Call<ListCategory> call = Application.API.getListCategory();
+            ListCategory dataResponse = null;
+            Response<ListCategory> response = call.execute();
             if(response != null){
                 dataResponse = response.body();
             }

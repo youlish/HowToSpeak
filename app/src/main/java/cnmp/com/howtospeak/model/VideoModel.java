@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by hinh1 on 12/22/2017.
  */
 
-public class VideoModel implements Serializable{
+public class VideoModel implements Serializable {
     @SerializedName("categoryId")
     @Expose
     private Integer categoryId;
@@ -26,10 +26,15 @@ public class VideoModel implements Serializable{
     @Expose
     private String title;
     private int timeStart;
+
     public VideoModel(String title, Integer level, String id) {
         this.id = id;
         this.level = level;
         this.title = title;
+    }
+
+    public VideoModel(String id) {
+        this.id = id;
     }
 
     public Integer getCategoryId() {
@@ -72,7 +77,11 @@ public class VideoModel implements Serializable{
         this.title = title;
     }
 
-    public int getTimeStart(){return timeStart;}
+    public int getTimeStart() {
+        return timeStart;
+    }
 
-    public void setTimeStart(int timeStart){this.timeStart = timeStart;}
+    public void setTimeStart(int timeStart) {
+        this.timeStart = timeStart;
+    }
 }
