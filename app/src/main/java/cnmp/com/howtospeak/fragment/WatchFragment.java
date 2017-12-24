@@ -115,13 +115,13 @@ public class WatchFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void initCategory() {
-        listCategory.add(new Category("Basic Level", R.mipmap.ic_launcher));
-        listCategory.add(new Category("Intermediate", R.mipmap.ic_launcher));
-        listCategory.add(new Category("Advanced", R.mipmap.ic_launcher));
-        listCategory.add(new Category("TED Talks", R.mipmap.ic_launcher));
-        listCategory.add(new Category("TED-Ed", R.mipmap.ic_launcher));
-        listCategory.add(new Category("CNN", R.mipmap.ic_launcher));
-        listCategory.add(new Category("BBC", R.mipmap.ic_launcher));
+        listCategory.add(new Category("Basic Level", R.drawable.img_1));
+        listCategory.add(new Category("Intermediate",R.drawable.img_2));
+        listCategory.add(new Category("Advanced", R.drawable.img_4));
+        listCategory.add(new Category("TED Talks", R.drawable.img_5));
+        listCategory.add(new Category("TED-Ed", R.drawable.img_6));
+        listCategory.add(new Category("CNN", R.drawable.img_3));
+        listCategory.add(new Category("BBC", R.drawable.img_7));
 
         categoryAdapter.notifyDataSetChanged();
     }
