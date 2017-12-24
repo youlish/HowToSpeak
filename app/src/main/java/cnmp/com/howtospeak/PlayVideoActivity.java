@@ -98,7 +98,8 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
             setVideoId(videoId, 0);
         } else {
             videoId = listVideos.get(position).getId();
-            setVideoId(videoId, 25000);
+            second = listVideos.get(position).getTimeStart();
+            setVideoId(videoId, second);
         }
 
         btnNextVideo = findViewById(R.id.btn_next_video);

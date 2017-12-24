@@ -2,6 +2,7 @@ package cnmp.com.howtospeak;
 
 import android.accounts.Account;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Arrays;
 
 import cnmp.com.howtospeak.model.Acount;
+import cnmp.com.howtospeak.network.SharedPreferencesManganer;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
@@ -151,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if(user != null){
                 account.setName(user.getEmail());
                 account.setEmail(user.getEmail());
+                SharedPreferencesManganer.saveAcount(this, account);
                 Intent intent = new Intent(this, MainActivity.class );
                 startActivity(intent);
                 finish();
