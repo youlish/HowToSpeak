@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
     public static ArrayList<VideoModel> listVideos = new ArrayList<>();
     private RecyclerView recyclerVideos;
     private RecyclerViewVideoAdapter viewVideoAdapter;
+    private TextView txtNotifiResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         query = intent.getStringExtra("QUERY");
 
-
+        txtNotifiResult=(TextView) findViewById(R.id.notifyResultsSearch);
         recyclerVideos = (RecyclerView) findViewById(R.id.recyclerResultsSearch);
         viewVideoAdapter = new RecyclerViewVideoAdapter(this, listVideos);
         recyclerVideos.setHasFixedSize(true);
@@ -65,6 +67,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
             videoModel.setTimeStart((int) StringUtil.stringToMilis(listVideoSub.get(i).getSub().getStart()));
             listVideos.add(videoModel);
         }
+        txtNotifiResult.setText("How to pronounce \""+ query +"\" in English ( "+String.valueOf(listVideos.size())+" )");
         //Toast.makeText(this, listVideos.size() + "", Toast.LENGTH_LONG).show();
 
         viewVideoAdapter.notifyDataSetChanged();
