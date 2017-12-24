@@ -9,4 +9,8 @@
     <color name="colorBlack">#000000</color>
     <color name="colorPrimaryButton">#4283e4</color>
     <color name="colorFocusedButton">#226cda</color>
+    <color name="colorBlue">#3F51B5</color>
+    <color name="colorDarkBlue">#32408e</color>
+    <color name="colorRed">#c82021</color>
+    <color name="colorDarkRed">#a91b1c</color>
 </resources>
