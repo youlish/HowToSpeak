@@ -30,6 +30,7 @@ import cnmp.com.howtospeak.LoginActivity;
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.adapter.ListViewOptionsAdapter;
 import cnmp.com.howtospeak.model.Option;
+import retrofit2.http.HEAD;
 
 public class MoreFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -51,6 +52,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
         getActivity().setTitle(R.string.more);
         View contentView = inflater.inflate(R.layout.fragment_more, container, false);
         listViewOption = contentView.findViewById(R.id.listOption);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -61,6 +63,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
                 .build();
         btnLogin = (Button) contentView.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 logout1();
