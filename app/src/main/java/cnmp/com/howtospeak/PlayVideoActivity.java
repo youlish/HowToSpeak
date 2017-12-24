@@ -1,6 +1,5 @@
 package cnmp.com.howtospeak;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,13 +15,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 
 import cnmp.com.howtospeak.adapter.ListSubtitleAdapter;
-import cnmp.com.howtospeak.fragment.VideoFragment;
+import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.model.Subtitle;
 import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.network.GetAPI;
@@ -33,7 +34,8 @@ import cnmp.com.howtospeak.utils.StringUtil;
  */
 
 
-public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener, AdapterView.OnItemClickListener {
+public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener, AdapterView.OnItemClickListener,
+    YouTubePlayer.OnInitializedListener{
     /**
      * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
      */
@@ -48,7 +50,6 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
      */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
-    private VideoFragment videoFragment;
     private View videoBox;
     //private View closeButton;
     private boolean isFullscreen;
@@ -67,7 +68,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private ArrayList<VideoModel> listVideos;
     private ArrayList<Long> arrayListTime = new ArrayList<>();
     private YouTubePlayer youTubePlayer;
-
+    private YouTubePlayerView youTubePlayerView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,19 +79,19 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             StrictMode.setThreadPolicy(policy);
         }
 
-        videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
+        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.playerView);
+        youTubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+
         Intent intent = getIntent();
         position = intent.getExtras().getInt("Position");
         listVideos = ResultsSearchActivity.getListVideos();
         if (listVideos.size() == 0) {
             videoId = intent.getExtras().getString("VideoID");
-            videoFragment.setVideoId(videoId, 0);
+            setVideoId(videoId, 0);
         } else {
             videoId = listVideos.get(position).getId();
-            videoFragment.setVideoId(videoId, 25000);
+            setVideoId(videoId, 25000);
         }
-        youTubePlayer = videoFragment.getPlayer();
-
 
         btnNextVideo = findViewById(R.id.btn_next_video);
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
@@ -123,7 +124,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         btnPreviousVideo.setOnClickListener(this);
         btnPreviousVideo.setTag(DEFAULT_BUTTON_ALPHA);
 
-        layout();
+        //layout();
         checkYouTubeApi();
 
         loadSubtitle(videoId);
@@ -204,15 +205,15 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        layout();
+        //layout();
     }
 
     @Override
     public void onFullscreen(boolean b) {
-        layout();
+        //layout();
     }
 
-    private void layout() {
+   /** private void layout() {
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 //        closeButton.setVisibility(isPortrait ? View.VISIBLE : View.GONE);
         if (isFullscreen) {
@@ -232,7 +233,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
                     Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         }
-    }
+    }*/
 
     //    public void onClickClose(@SuppressWarnings("unused") View view){
 //        videoFragment.pause();
@@ -316,7 +317,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
                     toast.show();
                 } else {
                     position += 1;
-                    videoFragment.setVideoId(listVideos.get(position).getId(), second);
+                    setVideoId(listVideos.get(position).getId(), second);
                 }
 
                 break;
@@ -329,9 +330,46 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (youTubePlayer != null) {
+            youTubePlayer.release();
+        }
+        finish();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         scrollListViewByPosition(i);
         youTubePlayer.seekToMillis(arrayListTime.get(i).intValue());
 
+    }
+    public void setVideoId(String videoId, int timeStart) {
+        if (videoId != null && !videoId.equals(this.videoId)) {
+            this.videoId = videoId;
+            this.second = timeStart;
+            if (youTubePlayer != null) {
+                youTubePlayer.loadVideo(videoId, timeStart);
+            }
+
+        }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//       youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
+//        youTubePlayer.setPlaybackEventListener(playBackEventListener);
+        this.youTubePlayer = youTubePlayer;
+        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
+        youTubePlayer.setOnFullscreenListener((PlayVideoActivity) this);
+        if (!b && videoId != null) {
+            youTubePlayer.loadVideo(videoId, second);
+        }
+
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        this.youTubePlayer = null;
     }
 }
