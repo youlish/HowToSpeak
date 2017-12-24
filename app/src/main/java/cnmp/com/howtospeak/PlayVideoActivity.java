@@ -36,7 +36,7 @@ import cnmp.com.howtospeak.utils.StringUtil;
  */
 
 
-public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener, AdapterView.OnItemClickListener,
+public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnClickListener, AdapterView.OnItemClickListener,
         YouTubePlayer.OnInitializedListener {
     /**
      * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
@@ -214,9 +214,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         super.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onFullscreen(boolean b) {
-    }
+
 
     @Override
     protected void onStart() {
@@ -301,8 +299,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
         youTubePlayer.setPlaybackEventListener(playbackEventListener);
         this.youTubePlayer = youTubePlayer;
-        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
-        youTubePlayer.setOnFullscreenListener((PlayVideoActivity) this);
         if (!b && videoId != null) {
             youTubePlayer.loadVideo(videoId, second);
         }
