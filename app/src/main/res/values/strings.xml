@@ -4,8 +4,10 @@
     <string name="login_facebook">Log in with Facebook</string>
     <string name="search">Search</string>
     <string name="introduce_1">Login now for more features</string>
+    <string name="features_built_by">Features are built by PlusTeam</string>
     <string name="introduce_2">Over 50,000 videos\nBuilt-in dictionary and word bank\nPresonal profile with learning stats
     \nVoice recording and playback functions</string>
+    <string name="please_comeback_later">Please come back later</string>
     <string name="login_now">Login now</string>
     <string name="logout">Logout</string>
     <string name="watch">Watch</string>

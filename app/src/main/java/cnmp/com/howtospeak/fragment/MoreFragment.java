@@ -29,8 +29,9 @@ import java.util.ArrayList;
 import cnmp.com.howtospeak.LoginActivity;
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.adapter.ListViewOptionsAdapter;
+import cnmp.com.howtospeak.model.Acount;
 import cnmp.com.howtospeak.model.Option;
-import retrofit2.http.HEAD;
+import cnmp.com.howtospeak.network.SharedPreferencesManganer;
 
 public class MoreFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -39,6 +40,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     private ArrayList<Option> optionArrayList;
     private Button btnLogin;
     private GoogleApiClient mGoogleApiClient;
+    private Acount acount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
         getActivity().setTitle(R.string.more);
         View contentView = inflater.inflate(R.layout.fragment_more, container, false);
         listViewOption = contentView.findViewById(R.id.listOption);
+        acount = SharedPreferencesManganer.getAcount(contentView.getContext());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -66,9 +69,19 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
 
             @Override
             public void onClick(View view) {
-                logout1();
+                if (acount == null) {
+                    login();
+                } else {
+                    logout1();
+                }
             }
         });
+        if (acount == null) {
+            btnLogin.setText(R.string.login_now);
+
+        } else {
+            btnLogin.setText(R.string.logout);
+        }
         optionArrayList = new ArrayList<>();
         listViewOptionsAdapter = new ListViewOptionsAdapter(getContext(), R.layout.item_list_options, optionArrayList);
         listViewOption.setAdapter(listViewOptionsAdapter);
@@ -94,6 +107,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     }
 
     public void logout1() {
+
         FirebaseAuth.getInstance().signOut();
         if (AccessToken.getCurrentAccessToken() != null) {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {

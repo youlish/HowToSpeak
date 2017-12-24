@@ -6,6 +6,9 @@
     tools:context="cnmp.com.howtospeak.fragment.MyPageFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <include layout="@layout/layout_introduce"/>
+    <include layout="@layout/layout_introduce" />
 
+    <include
+        layout="@layout/layout_built"
+        android:visibility="gone" />
 </FrameLayout>

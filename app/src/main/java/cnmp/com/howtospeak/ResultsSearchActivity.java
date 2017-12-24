@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -66,7 +65,7 @@ public class ResultsSearchActivity extends AppCompatActivity {
             videoModel.setTimeStart((int) StringUtil.stringToMilis(listVideoSub.get(i).getSub().getStart()));
             listVideos.add(videoModel);
         }
-        Toast.makeText(this, listVideos.size() + "", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, listVideos.size() + "", Toast.LENGTH_LONG).show();
 
         viewVideoAdapter.notifyDataSetChanged();
     }

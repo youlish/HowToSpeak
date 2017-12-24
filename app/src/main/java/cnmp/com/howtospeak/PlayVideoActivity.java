@@ -36,7 +36,7 @@ import cnmp.com.howtospeak.utils.StringUtil;
  */
 
 
-public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnClickListener, AdapterView.OnItemClickListener,
+public class PlayVideoActivity extends YouTubeBaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
         YouTubePlayer.OnInitializedListener {
     /**
      * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
@@ -67,7 +67,8 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
     private Button btnRepeatSentence;
     private Button btnNextVideo;
     private Button btnPreviousVideo;
-    private final double DEFAULT_BUTTON_ALPHA = 0.7;
+    private final float DEFAULT_BUTTON_ALPHA = (float) 0.7;
+    private final float DEFAULT_BUTTON_ALPHA_1 = (float) 1.0;
     private ListView listViewSubtitle;
     private ListSubtitleAdapter listSubtitleAdapter;
     private ArrayList<Subtitle> arrayListSubtitle = new ArrayList<>();
@@ -76,6 +77,10 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerView youTubePlayerView;
     private MyAsync mAsync;
+    private RepeatAsync repeatAsync;
+    private boolean isRepeating = false;
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,12 +135,21 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
         }
 
         //setup button control video
+
         btnNextVideo.setOnClickListener(this);
-        btnNextVideo.setTag(DEFAULT_BUTTON_ALPHA);
         btnRepeatSentence.setOnClickListener(this);
-        btnRepeatSentence.setTag(DEFAULT_BUTTON_ALPHA);
         btnPreviousVideo.setOnClickListener(this);
-        btnPreviousVideo.setTag(DEFAULT_BUTTON_ALPHA);
+        if (position <= 0) {
+            btnPreviousVideo.setAlpha(DEFAULT_BUTTON_ALPHA);
+            btnNextVideo.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+        } else if (position >= listVideos.size()) {
+            btnPreviousVideo.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+            btnNextVideo.setAlpha(DEFAULT_BUTTON_ALPHA);
+        } else {
+            btnPreviousVideo.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+            btnNextVideo.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+        }
+
 
         checkYouTubeApi();
 
@@ -215,7 +229,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -236,44 +249,60 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
         view.setLayoutParams(params);
     }
 
+    private void setRepeatSentence(int position) {
+        Log.d("POSITION_CURRENT", String.valueOf(position));
+
+        startTime = StringUtil.stringToMilis(arrayListSubtitle.get(position).getStart());
+        endTime = StringUtil.stringToMilis(arrayListSubtitle.get(position).getEnd());
+        repeatAsync = new RepeatAsync();
+        mAsync.cancel(true);
+        repeatAsync.execute();
+    }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        double tag = (double) view.getTag();
         switch (id) {
             case R.id.btn_repeat_sentence:
-                if (tag == DEFAULT_BUTTON_ALPHA) {
-                    tag = 1;
+
+                if (isRepeating) {
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA);
+                    isRepeating = false;
                 } else {
-                    tag = DEFAULT_BUTTON_ALPHA;
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+                    setRepeatSentence(getPositionByTime(youTubePlayer.getCurrentTimeMillis()));
+                    isRepeating = true;
                 }
                 break;
             case R.id.btn_previous_video:
-                if(position <=0){
-                    btnPreviousVideo.setEnabled(false);
-                }else{
-                    position -=1;
-                    btnPreviousVideo.setEnabled(true);
+                if (position <= 0) {
+                    view.setEnabled(false);
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA);
+
+                } else {
+                    position -= 1;
+                    view.setEnabled(true);
                     second = listVideos.get(position).getTimeStart();
-                    setVideoId(listVideos.get(position).getId(),second);
+                    setVideoId(listVideos.get(position).getId(), second);
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+
                 }
-
-
                 break;
             case R.id.btn_next_video:
                 if (position >= listVideos.size()) {
-                    btnNextVideo.setEnabled(false);
+                    view.setEnabled(false);
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA);
                 } else {
                     position += 1;
-                    btnNextVideo.setEnabled(true);
+                    view.setEnabled(true);
                     second = listVideos.get(position).getTimeStart();
                     setVideoId(listVideos.get(position).getId(), second);
+                    view.setAlpha(DEFAULT_BUTTON_ALPHA_1);
+
                 }
 
                 break;
         }
-        view.setTag(tag);
-        view.setAlpha((float) tag);
     }
 
     @Override
@@ -321,10 +350,11 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
 
         @Override
         protected Void doInBackground(Void... params) {
-
             do {
                 final int ms = youTubePlayer.getCurrentTimeMillis();
                 try {
+                    if (isCancelled()) break;
+
                     Thread.sleep(500);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -333,7 +363,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
                             scrollListViewByTime(ms);
                         }
                     });
-                    if (isCancelled()) break;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -344,7 +373,41 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            Log.d("AHIHI", String.valueOf(values));
+        }
+    }
+
+    private class RepeatAsync extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            do {
+                final int ms = youTubePlayer.getCurrentTimeMillis();
+
+                try {
+                    if (isCancelled()) break;
+
+                    Thread.sleep(500);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //stuff that updates ui
+                            if (ms > endTime) {
+                                youTubePlayer.seekToMillis((int) startTime);
+                            }
+                            Log.d("POSITION_CURRENT", String.valueOf(ms));
+
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (isRepeating);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
         }
     }
 
