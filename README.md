@@ -1,4 +1,4 @@
-# HowToSpeak
+# HowToSpeak nhóm 11
 > Giới thiệu dự án.
 
 [![NPM Version][npm-image]][npm-url]
