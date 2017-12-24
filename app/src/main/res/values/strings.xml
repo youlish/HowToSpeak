@@ -7,6 +7,7 @@
     <string name="introduce_2">Over 50,000 videos\nBuilt-in dictionary and word bank\nPresonal profile with learning stats
     \nVoice recording and playback functions</string>
     <string name="login_now">Login now</string>
+    <string name="logout">Logout</string>
     <string name="watch">Watch</string>
     <string name="learn">Learn</string>
     <string name="my_page">My Page</string>

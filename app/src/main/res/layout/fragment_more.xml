@@ -13,13 +13,15 @@
         android:layout_marginBottom="?actionBarSize" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
-        android:text="Logout"
+        android:text="@string/login_now"
         android:textColor="@color/colorWhite"
         android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/view_margin"
+        android:layout_marginRight="@dimen/view_margin"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

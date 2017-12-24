@@ -1,5 +1,6 @@
 package cnmp.com.howtospeak.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,17 +26,20 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import cnmp.com.howtospeak.LoginActivity;
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.adapter.ListViewOptionsAdapter;
 import cnmp.com.howtospeak.model.Option;
+import retrofit2.http.HEAD;
 
 public class MoreFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private ListView listViewOption;
     private ListViewOptionsAdapter listViewOptionsAdapter;
     private ArrayList<Option> optionArrayList;
-    private Button logout;
+    private Button btnLogin;
     private GoogleApiClient mGoogleApiClient;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +52,18 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
         getActivity().setTitle(R.string.more);
         View contentView = inflater.inflate(R.layout.fragment_more, container, false);
         listViewOption = contentView.findViewById(R.id.listOption);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(),  this)
+                .enableAutoManage(getActivity(), this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        logout = (Button) contentView.findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
+        btnLogin = (Button) contentView.findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 logout1();
@@ -70,7 +76,14 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
 
         return contentView;
     }
-    private void logout(){
+
+    private void login() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void logout() {
         //DatabaseManager.getInstance(getActivity()).onUpgrade();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -79,9 +92,10 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
             }
         });
     }
+
     public void logout1() {
         FirebaseAuth.getInstance().signOut();
-        if(AccessToken.getCurrentAccessToken() != null){
+        if (AccessToken.getCurrentAccessToken() != null) {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
@@ -89,14 +103,15 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
 
                 }
             }).executeAsync();
-            Toast.makeText(getContext(), "successful logout", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "successful btnLogin", Toast.LENGTH_LONG).show();
             return;
-        }else if(mGoogleApiClient.isConnected()){
+        } else if (mGoogleApiClient.isConnected()) {
             logout();
-            Toast.makeText(getContext(), "successful logout", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "successful btnLogin", Toast.LENGTH_LONG).show();
         }
 
     }
+
     private void initOption() {
         optionArrayList.add(new Option(getResources().getString(R.string.settings), R.drawable.ic_setting));
         optionArrayList.add(new Option(getResources().getString(R.string.invite_friends), R.drawable.ic_invite));
@@ -113,12 +128,14 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
     @Override
     public void onPause() {
         super.onPause();
         mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
