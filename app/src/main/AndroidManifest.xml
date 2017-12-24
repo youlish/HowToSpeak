@@ -28,6 +28,10 @@
         <activity android:name=".ResultsSearchActivity" />
         <activity android:name=".SplashScreenActivity" />
         <activity android:name=".LoginActivity"></activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
