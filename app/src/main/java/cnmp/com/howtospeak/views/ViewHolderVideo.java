@@ -22,12 +22,10 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
     public TextView txtLevel;
     public YouTubeThumbnailView thumbai;
     public String videoID;
-    public int second;
     public int position;
     public void setVideoID(String videoID) {
         this.videoID = videoID;
     }
-    public void setVideoPlayTime(int second){this.second = second;}
     public void setPosition(int position){this.position=position;}
     public ViewHolderVideo(final View itemView) {
         super(itemView);
@@ -42,7 +40,6 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
 
                 Intent intent = new Intent(view.getContext(), PlayVideoActivity.class);
                 intent.putExtra("VideoID", videoID);
-                intent.putExtra("Second", second);
                 intent.putExtra("Position", position);
                 view.getContext().startActivity(intent);
             }

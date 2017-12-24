@@ -1,6 +1,5 @@
 package cnmp.com.howtospeak.fragment;
 
-import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +9,27 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
-import java.util.ArrayList;
-
-import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.PlayVideoActivity;
-import cnmp.com.howtospeak.model.VideoModel;
-import cnmp.com.howtospeak.model.responses.ListVideo;
+import cnmp.com.howtospeak.model.DeveloperKey;
 
 /**
  * Created by Dung on 12/14/2017.
  */
 
-public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener{
-    private YouTubePlayer player;
+public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener {
+    private static YouTubePlayer player;
     private String videoId;
     private int timeStart;
-    public static VideoFragment newInstance(){return new VideoFragment();}
+
+    public static VideoFragment newInstance() {
+        return new VideoFragment();
+    }
+
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        initialize(DeveloperKey.DEVELOPER_KEY,this);
+        initialize(DeveloperKey.DEVELOPER_KEY, this);
 
     }
 
@@ -42,21 +41,23 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(player !=null){
+        if (player != null) {
             player.release();
         }
     }
-    public void setVideoId(String videoId, int timeStart ){
-        if(videoId != null && !videoId.equals(this.videoId)){
+
+    public void setVideoId(String videoId, int timeStart) {
+        if (videoId != null && !videoId.equals(this.videoId)) {
             this.videoId = videoId;
             this.timeStart = timeStart;
-            if(player != null){
+            if (player != null) {
                 player.loadVideo(videoId, timeStart);
             }
 
         }
     }
-    public void pause(){
+
+    public void pause() {
         if (player != null) {
             player.pause();
         }
@@ -68,8 +69,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         this.player = youTubePlayer;
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
         player.setOnFullscreenListener((PlayVideoActivity) getActivity());
-        if(!b && videoId != null){
-            player.loadVideo(videoId,timeStart);
+        if (!b && videoId != null) {
+            player.loadVideo(videoId, timeStart);
         }
     }
 
@@ -77,5 +78,11 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         this.player = null;
     }
+
+    public YouTubePlayer getPlayer() {
+        return player;
+    }
+
+
 
 }
