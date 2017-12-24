@@ -77,7 +77,14 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         Intent intent = getIntent();
         position = intent.getExtras().getInt("Position");
         listVideos = ResultsSearchActivity.getListVideos();
-        videoId = listVideos.get(position).getId();
+        if(listVideos.size() ==0){
+            videoId = intent.getExtras().getString("VideoID");
+            videoFragment.setVideoId(videoId,0);
+        }else{
+            videoId = listVideos.get(position).getId();
+            videoFragment.setVideoId(videoId,25000);
+        }
+
 
         btnNextVideo = findViewById(R.id.btn_next_video);
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
@@ -90,7 +97,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
         videoBox.setVisibility(View.INVISIBLE);
-        videoFragment.setVideoId(videoId,second);
+
         if (videoBox.getVisibility() != View.VISIBLE) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 

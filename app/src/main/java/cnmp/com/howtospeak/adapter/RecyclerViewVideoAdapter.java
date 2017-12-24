@@ -80,7 +80,6 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVid
         holder.txtVideoTitle.setVisibility(labelsVisible ? View.VISIBLE : View.GONE);
 
         holder.setVideoID(video.getId());
-        holder.setVideoPlayTime(25000);
         holder.setPosition(position);
         holder.setVideoID(video.getTitle());
     }
