@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,13 +29,14 @@ import cnmp.com.howtospeak.model.VideoModel;
 import cnmp.com.howtospeak.network.GetAPI;
 import cnmp.com.howtospeak.utils.StringUtil;
 
+
 /**
  * Created by Dung on 12/14/2017.
  */
 
 
 public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener, AdapterView.OnItemClickListener,
-    YouTubePlayer.OnInitializedListener{
+        YouTubePlayer.OnInitializedListener {
     /**
      * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
      */
@@ -69,6 +70,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
     private ArrayList<Long> arrayListTime = new ArrayList<>();
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerView youTubePlayerView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,16 +131,9 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         checkYouTubeApi();
 
         loadSubtitle(videoId);
-
-        //scroll list view at miliseconds
-        scrollListViewByTime(StringUtil.stringToMilis("00:01:35,939"));
         listViewSubtitle.setOnItemClickListener(this);
-
     }
 
-    private void autoScrollListView() {
-
-    }
 
     private void loadSubtitle(String videoId) {
         arrayListSubtitle = GetAPI.getListSubtitleByVideoId(videoId).getListSub();
@@ -211,60 +206,12 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
 
     @Override
     public void onFullscreen(boolean b) {
-        //layout();
     }
 
-   /** private void layout() {
-        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-//        closeButton.setVisibility(isPortrait ? View.VISIBLE : View.GONE);
-        if (isFullscreen) {
-            videoBox.setTranslationY(0);
-            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.TOP | Gravity.LEFT);
-        } else if (isPortrait) {
-
-            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP);
-        } else {
-            videoBox.setTranslationY(0); // Reset any translation that was applied in portrait.
-            int screenWidth = dpToPx(getResources().getConfiguration().screenWidthDp);
-
-            //int videoWidth = screenWidth - screenWidth / 4 - dpToPx(LANDSCAPE_VIDEO_PADDING_DP);
-            setLayoutSize(videoFragment.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            setLayoutSizeAndGravity(videoBox, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                    Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-        }
-    }*/
-
-    //    public void onClickClose(@SuppressWarnings("unused") View view){
-//        videoFragment.pause();
-//        ViewPropertyAnimator animator = videoBox.animate()
-//                .translationYBy(videoBox.getHeight())
-//                .setDuration(ANIMATION_DURATION_MILLIS);
-//        runOnAnimationEnd(animator, new Runnable() {
-//            @Override
-//            public void run() {
-//                videoBox.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//        Intent intent = new Intent(this, WatchFragment.class);
-//        view.getContext().startActivity(intent);
-//    }
-//    @TargetApi(16)
-//    private void  runOnAnimationEnd(ViewPropertyAnimator animator, final Runnable runnable){
-//        if (Build.VERSION.SDK_INT >= 16) {
-//            animator.withEndAction(runnable);
-//        } else {
-//            animator.setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    runnable.run();
-//                }
-//            });
-//        }
-//    }
-    private int dpToPx(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        autoScrollListView();
     }
 
     private static void setLayoutSize(View view, int width, int height) {
@@ -282,23 +229,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         view.setLayoutParams(params);
     }
 
-    private static final int parseInt(String intString, int defaultValue) {
-        try {
-            return intString != null ? Integer.valueOf(intString) : defaultValue;
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
-    }
-
-    private String formatTime(int millis) {
-        int seconds = millis / 1000;
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-
-        return (hours == 0 ? "" : hours + ":")
-                + String.format("%02d:%02d", minutes % 60, seconds % 60);
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -312,17 +242,17 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
                 }
                 break;
             case R.id.btn_previous_video:
-                if (position >= listVideos.size()) {
-                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                } else {
-                    position += 1;
-                    setVideoId(listVideos.get(position).getId(), second);
-                }
+
 
                 break;
             case R.id.btn_next_video:
+                if (position >= listVideos.size()) {
+                    btnNextVideo.setEnabled(false);
+                } else {
+                    position += 1;
+                    btnNextVideo.setEnabled(true);
+                    setVideoId(listVideos.get(position).getId(), second);
+                }
 
                 break;
         }
@@ -345,6 +275,22 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         youTubePlayer.seekToMillis(arrayListTime.get(i).intValue());
 
     }
+
+    public void autoScrollListView() {
+        Log.d("IsPlaying", String.valueOf(youTubePlayer.isPlaying()));
+        /*Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (player.isPlaying()) {
+
+                    //scroll list view at miliseconds
+                    scrollListViewByTime(player.getCurrentTimeMillis());
+                }
+            }
+        });
+        t.start();*/
+    }
+
     public void setVideoId(String videoId, int timeStart) {
         if (videoId != null && !videoId.equals(this.videoId)) {
             this.videoId = videoId;
