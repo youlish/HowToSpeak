@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -32,8 +33,10 @@ import cnmp.com.howtospeak.utils.StringUtil;
  */
 
 
-public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener {
-    /**Khoảng thời gian hoạt hình trượt lên trong video theo chân dung*/
+public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFullscreenListener, View.OnClickListener, AdapterView.OnItemClickListener {
+    /**
+     * Khoảng thời gian hoạt hình trượt lên trong video theo chân dung
+     */
 
     private static final int ANIMATION_DURATION_MILLIS = 300;
     /**
@@ -63,6 +66,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private ArrayList<Subtitle> arrayListSubtitle = new ArrayList<>();
     private ArrayList<VideoModel> listVideos;
     private ArrayList<Long> arrayListTime = new ArrayList<>();
+    private YouTubePlayer youTubePlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,17 +77,19 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
         videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         Intent intent = getIntent();
         position = intent.getExtras().getInt("Position");
         listVideos = ResultsSearchActivity.getListVideos();
-        if(listVideos.size() ==0){
+        if (listVideos.size() == 0) {
             videoId = intent.getExtras().getString("VideoID");
-            videoFragment.setVideoId(videoId,0);
-        }else{
+            videoFragment.setVideoId(videoId, 0);
+        } else {
             videoId = listVideos.get(position).getId();
-            videoFragment.setVideoId(videoId,25000);
+            videoFragment.setVideoId(videoId, 25000);
         }
+        youTubePlayer = videoFragment.getPlayer();
 
 
         btnNextVideo = findViewById(R.id.btn_next_video);
@@ -119,10 +125,17 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
 
         layout();
         checkYouTubeApi();
+
         loadSubtitle(videoId);
 
         //scroll list view at miliseconds
         scrollListViewByTime(StringUtil.stringToMilis("00:01:35,939"));
+        listViewSubtitle.setOnItemClickListener(this);
+
+    }
+
+    private void autoScrollListView() {
+
     }
 
     private void loadSubtitle(String videoId) {
@@ -134,16 +147,27 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         }
     }
 
-    private void scrollListViewByTime(long ms){
+    private void scrollListViewByTime(long ms) {
         int position = getPositionByTime(ms);
         for (int i = 0; i < arrayListSubtitle.size(); i++) {
-            if (i == position){
+            if (i == position) {
                 arrayListSubtitle.get(i).setPlaying(true);
-            }else {
+            } else {
                 arrayListSubtitle.get(i).setPlaying(false);
             }
         }
         listViewSubtitle.smoothScrollToPosition(position);
+        listSubtitleAdapter.refreshData(arrayListSubtitle);
+    }
+
+    private void scrollListViewByPosition(int position) {
+        for (int i = 0; i < arrayListSubtitle.size(); i++) {
+            if (i == position) {
+                arrayListSubtitle.get(i).setPlaying(true);
+            } else {
+                arrayListSubtitle.get(i).setPlaying(false);
+            }
+        }
         listSubtitleAdapter.refreshData(arrayListSubtitle);
     }
 
@@ -167,6 +191,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -262,6 +287,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             return defaultValue;
         }
     }
+
     private String formatTime(int millis) {
         int seconds = millis / 1000;
         int minutes = seconds / 60;
@@ -270,6 +296,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         return (hours == 0 ? "" : hours + ":")
                 + String.format("%02d:%02d", minutes % 60, seconds % 60);
     }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -283,11 +310,11 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
                 }
                 break;
             case R.id.btn_previous_video:
-                if(position >= listVideos.size()){
-                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video",Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0 ,0);
+                if (position >= listVideos.size()) {
+                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
-                }else {
+                } else {
                     position += 1;
                     videoFragment.setVideoId(listVideos.get(position).getId(), second);
                 }
@@ -299,5 +326,12 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         }
         view.setTag(tag);
         view.setAlpha((float) tag);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        scrollListViewByPosition(i);
+        youTubePlayer.seekToMillis(arrayListTime.get(i).intValue());
+
     }
 }
