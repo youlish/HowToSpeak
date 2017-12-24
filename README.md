@@ -48,7 +48,7 @@ Client:
 - [@Retrofit](http://square.github.io/retrofit/)
 - [@Firebase](https://firebase.google.com/)
 - [@Google APi](https://console.developers.google.com)
-- [@Facebook API]
+- [@Facebook API](https://developers.facebook.com/docs/android/)
 - [@Youtube Player API](https://developers.google.com/youtube/android/player/)
 
 ## Các version
@@ -69,7 +69,7 @@ Client:
 	* HenryNQC - Nguyễn Quốc Cường(https://www.facebook.com/HenryNqc)
 	* DungYDBG - Trần Đức Dũng(https://www.facebook.com/ducdung2801)
 
-*Phụ trách nội dung, test :
+* Phụ trách nội dung, test :
 	* Hóa Trần - Trần Thanh Hóa(https://www.facebook.com/hoatran6496)
 
 
