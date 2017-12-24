@@ -306,6 +306,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         if (!b && videoId != null) {
             youTubePlayer.loadVideo(videoId, second);
         }
+
         mAsync = new MyAsync();
         mAsync.execute();
 
@@ -363,6 +364,8 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
             playbackState = "PLAYING";
             Log.d("PLAYING ", getTimesText());
             scrollListViewByTime(youTubePlayer.getCurrentTimeMillis());
+            if (!mAsync.isCancelled())
+                mAsync.cancel(true);
             mAsync = new MyAsync();
             mAsync.execute();
         }
@@ -375,12 +378,16 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         @Override
         public void onStopped() {
             playbackState = "STOPPED";
+            if (!mAsync.isCancelled())
+                mAsync.cancel(true);
+
         }
 
         @Override
         public void onPaused() {
             playbackState = "PAUSED";
-            mAsync.cancel(true);
+            if (!mAsync.isCancelled())
+                mAsync.cancel(true);
         }
 
         @Override

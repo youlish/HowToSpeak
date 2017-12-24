@@ -1,46 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <com.google.android.youtube.player.YouTubeThumbnailView
-            android:id="@+id/thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/no_thumbnail" />
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:weightSum="4">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="left|bottom"
-            android:layout_margin="@dimen/view_margin"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="3.2"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_video_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="2"
-                android:padding="5dp"
-                android:text="The 5 resons why you should visit VietNam"
-                android:textColor="@color/colorBlack"
-                android:textSize="13sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
+
+                <com.google.android.youtube.player.YouTubeThumbnailView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_thumbnail" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|bottom"
+                    android:background="@android:drawable/screen_background_dark_transparent"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/txt_video_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="2"
+                        android:padding="5dp"
+                        android:text="The 5 resons why you should visit VietNam"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.8"
+            android:gravity="center|right"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/layout_level_background"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"
-                android:background="@drawable/button_primary"
+                android:background="@drawable/background_level_blue"
                 android:gravity="center">
 
                 <TextView
@@ -52,4 +76,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>
