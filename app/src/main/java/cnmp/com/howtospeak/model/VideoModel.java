@@ -25,7 +25,7 @@ public class VideoModel implements Serializable {
     @SerializedName("title")
     @Expose
     private String title;
-    private int timeStart;
+    private int timeStart=0;
 
     public VideoModel(String title, Integer level, String id) {
         this.id = id;

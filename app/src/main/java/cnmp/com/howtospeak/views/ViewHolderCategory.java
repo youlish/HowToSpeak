@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import cnmp.com.howtospeak.R;
+import cnmp.com.howtospeak.model.Category;
 
 /**
  * Created by henry on 12/10/2017.
@@ -15,6 +15,7 @@ import cnmp.com.howtospeak.R;
 public class ViewHolderCategory extends RecyclerView.ViewHolder {
     public ImageView imvCategoryImage;
     public TextView txtCategoryName;
+    private Category category=null;
 
     public ViewHolderCategory(final View itemView) {
         super(itemView);
@@ -22,12 +23,5 @@ public class ViewHolderCategory extends RecyclerView.ViewHolder {
         txtCategoryName = itemView.findViewById(R.id.txt_category_name);
 
         //called when click category
-
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(itemView.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

@@ -1,5 +1,6 @@
 package cnmp.com.howtospeak.network;
 
+import cnmp.com.howtospeak.model.responses.ListCategory;
 import cnmp.com.howtospeak.model.responses.ListSubtitles;
 import cnmp.com.howtospeak.model.responses.ListVideo;
 import cnmp.com.howtospeak.model.responses.ListVideoSub;
@@ -23,5 +24,9 @@ public interface APISever {
     // /caption/subtitle?text=and
     @GET("/caption/subtitle")
     Call<ListVideoSub> getListVideoSubByText(@Query("text") String text);
+
+    // /videocategories
+    @GET("/videocategories")
+    Call<ListCategory> getListCategory();
 
 }
