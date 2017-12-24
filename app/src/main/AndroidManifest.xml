@@ -27,6 +27,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity android:name=".ResultsSearchActivity" />
         <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".CategotyActivity" />
         <activity android:name=".LoginActivity"></activity>
     </application>
 

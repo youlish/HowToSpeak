@@ -1,11 +1,12 @@
 package cnmp.com.howtospeak.views;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import cnmp.com.howtospeak.CategotyActivity;
 import cnmp.com.howtospeak.R;
 
 /**
@@ -26,7 +27,9 @@ public class ViewHolderCategory extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(itemView.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), CategotyActivity.class);
+                view.getContext().startActivity(intent);
+
             }
         });
     }

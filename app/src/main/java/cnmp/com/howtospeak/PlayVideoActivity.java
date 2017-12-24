@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -277,7 +276,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
     }
 
     public void autoScrollListView() {
-        Log.d("IsPlaying", String.valueOf(youTubePlayer.isPlaying()));
+        //Log.d("IsPlaying", String.valueOf(youTubePlayer.isPlaying()));
         /*Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
