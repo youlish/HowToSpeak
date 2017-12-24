@@ -5,6 +5,14 @@
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
+<p align="center">
+  <img width="300" height="300" src="https://user-images.githubusercontent.com/20503202/34329521-40035a04-e936-11e7-9cd4-9a1c236d2e1c.jpg">
+  Design By 
+  <img width="300" height="300" src="https://user-images.githubusercontent.com/20503202/34329520-34aa3fce-e936-11e7-85f7-3d44566f4ddd.jpg">
+</p>
+
+
+
 Ứng dụng giúp cho những người có nhu cầu học ngoại ngữ trước mắt sẽ hướng đến là "English" và nó giải quyết một số vấn đề mà ai ai học ngoại ngữ cũng vấp phải:
 1. Khi thấy một từ, cụm từ mới bạn sẽ ghi nhớ nó như thế nào?
 2. Làm thế nào để có thể biết ngữ cảnh cho việc sử dụng một từ, cụm từ và thậm chí một câu trong thực tế giao tiếp?
@@ -48,8 +56,21 @@ Client:
 - [@Retrofit](http://square.github.io/retrofit/)
 - [@Firebase](https://firebase.google.com/)
 - [@Google APi](https://console.developers.google.com)
-- [@Facebook API](https://developers.facebook.com/docs/android/)
+- [@Facebook API]
 - [@Youtube Player API](https://developers.google.com/youtube/android/player/)
+
+## Screenshot 
+
+<p align="center">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329599-9a3ed2ac-e939-11e7-852f-7f1208daa827.png">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329600-9a75115a-e939-11e7-8845-f45e30db10ec.png">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329601-9aa92e2c-e939-11e7-8df8-aeba46a5c14b.png">
+</p></br>
+<p align="center">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329602-9adcf90a-e939-11e7-9da4-15d032031e8a.png">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329603-9b13dd9e-e939-11e7-9827-eb7f1be9c92c.png">
+  <img width="260" height="450" src="https://user-images.githubusercontent.com/20503202/34329604-9b4ade70-e939-11e7-9d7e-0cfc7c170f7a.png">
+</p>
 
 ## Các version
 
@@ -61,6 +82,11 @@ Client:
     *  Login google, facebook
 
 ## Nhóm phát triển Plus Team
+
+<p align="center">
+  <img width="300" height="300" src="https://user-images.githubusercontent.com/20503202/34329520-34aa3fce-e936-11e7-85f7-3d44566f4ddd.jpg">
+</p>
+
 * Trưởng nhóm (Scrum master)
 	* Hinh_CT – Nguyễn Văn Hinh(https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
 
