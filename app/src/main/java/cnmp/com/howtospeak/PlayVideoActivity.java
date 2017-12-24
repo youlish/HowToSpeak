@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     private ArrayList<Subtitle> arrayListSubtitle = new ArrayList<>();
     private ArrayList<VideoModel> listVideos;
     private ArrayList<Long> arrayListTime = new ArrayList<>();
-    private YouTubePlayer youTubePlayer;
+    private YouTubePlayer player;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,8 +90,6 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
             videoId = listVideos.get(position).getId();
             videoFragment.setVideoId(videoId, 25000);
         }
-        youTubePlayer = videoFragment.getPlayer();
-
 
         btnNextVideo = findViewById(R.id.btn_next_video);
         btnRepeatSentence = findViewById(R.id.btn_repeat_sentence);
@@ -125,18 +124,12 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
 
         layout();
         checkYouTubeApi();
+        player = VideoFragment.player;
 
         loadSubtitle(videoId);
-
-        //scroll list view at miliseconds
-        scrollListViewByTime(StringUtil.stringToMilis("00:01:35,939"));
         listViewSubtitle.setOnItemClickListener(this);
-
     }
 
-    private void autoScrollListView() {
-
-    }
 
     private void loadSubtitle(String videoId) {
         arrayListSubtitle = GetAPI.getListSubtitleByVideoId(videoId).getListSub();
@@ -234,35 +227,14 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         }
     }
 
-    //    public void onClickClose(@SuppressWarnings("unused") View view){
-//        videoFragment.pause();
-//        ViewPropertyAnimator animator = videoBox.animate()
-//                .translationYBy(videoBox.getHeight())
-//                .setDuration(ANIMATION_DURATION_MILLIS);
-//        runOnAnimationEnd(animator, new Runnable() {
-//            @Override
-//            public void run() {
-//                videoBox.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//        Intent intent = new Intent(this, WatchFragment.class);
-//        view.getContext().startActivity(intent);
-//    }
-//    @TargetApi(16)
-//    private void  runOnAnimationEnd(ViewPropertyAnimator animator, final Runnable runnable){
-//        if (Build.VERSION.SDK_INT >= 16) {
-//            animator.withEndAction(runnable);
-//        } else {
-//            animator.setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    runnable.run();
-//                }
-//            });
-//        }
-//    }
     private int dpToPx(int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        autoScrollListView();
     }
 
     private static void setLayoutSize(View view, int width, int height) {
@@ -280,23 +252,6 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
         view.setLayoutParams(params);
     }
 
-    private static final int parseInt(String intString, int defaultValue) {
-        try {
-            return intString != null ? Integer.valueOf(intString) : defaultValue;
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
-    }
-
-    private String formatTime(int millis) {
-        int seconds = millis / 1000;
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-
-        return (hours == 0 ? "" : hours + ":")
-                + String.format("%02d:%02d", minutes % 60, seconds % 60);
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -310,18 +265,18 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
                 }
                 break;
             case R.id.btn_previous_video:
-                if (position >= listVideos.size()) {
-                    Toast toast = Toast.makeText(view.getContext(), "Bạn đã play video cuối cùng trong list video", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                } else {
-                    position += 1;
-                    videoFragment.setVideoId(listVideos.get(position).getId(), second);
-                }
+
 
                 break;
             case R.id.btn_next_video:
+                if (position >= listVideos.size()) {
+                    btnNextVideo.setEnabled(false);
+                } else {
+                    position += 1;
+                    videoFragment.setVideoId(listVideos.get(position).getId(), second);
+                    btnNextVideo.setEnabled(true);
 
+                }
                 break;
         }
         view.setTag(tag);
@@ -331,7 +286,23 @@ public class PlayVideoActivity extends Activity implements YouTubePlayer.OnFulls
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         scrollListViewByPosition(i);
-        youTubePlayer.seekToMillis(arrayListTime.get(i).intValue());
+        player.seekToMillis(arrayListTime.get(i).intValue());
 
     }
+
+    public void autoScrollListView() {
+        Log.d("IsPlaying", String.valueOf(player.isPlaying()));
+        /*Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (player.isPlaying()) {
+
+                    //scroll list view at miliseconds
+                    scrollListViewByTime(player.getCurrentTimeMillis());
+                }
+            }
+        });
+        t.start();*/
+    }
+
 }

@@ -17,7 +17,7 @@ import cnmp.com.howtospeak.model.DeveloperKey;
  */
 
 public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener {
-    private static YouTubePlayer player;
+    public static YouTubePlayer player;
     private String videoId;
     private int timeStart;
 
@@ -78,11 +78,5 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         this.player = null;
     }
-
-    public YouTubePlayer getPlayer() {
-        return player;
-    }
-
-
 
 }
