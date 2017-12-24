@@ -66,7 +66,7 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVid
     @Override
     public void onBindViewHolder(ViewHolderVideo holder, int position) {
         VideoModel video = list.get(position);
-        holder.txtLevel.setText(video.getLevel());
+        holder.txtLevel.setText(String.valueOf(video.getLevel()));
         YouTubeThumbnailLoader loader = thumbnailViewToLoaderMap.get(holder.thumbai);
         holder.thumbai.initialize(DeveloperKey.DEVELOPER_KEY, thumbnailListener);
         if (loader == null) {
