@@ -249,6 +249,14 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
                 }
                 break;
             case R.id.btn_previous_video:
+                if(position <=0){
+                    btnPreviousVideo.setEnabled(false);
+                }else{
+                    position -=1;
+                    btnPreviousVideo.setEnabled(true);
+                    second = listVideos.get(position).getTimeStart();
+                    setVideoId(listVideos.get(position).getId(),second);
+                }
 
 
                 break;
@@ -258,6 +266,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements  View.OnCl
                 } else {
                     position += 1;
                     btnNextVideo.setEnabled(true);
+                    second = listVideos.get(position).getTimeStart();
                     setVideoId(listVideos.get(position).getId(), second);
                 }
 

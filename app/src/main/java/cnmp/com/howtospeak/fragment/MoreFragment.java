@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.adapter.ListViewOptionsAdapter;
+import cnmp.com.howtospeak.model.Acount;
 import cnmp.com.howtospeak.model.Option;
 
 public class MoreFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
@@ -34,8 +35,9 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     private ListView listViewOption;
     private ListViewOptionsAdapter listViewOptionsAdapter;
     private ArrayList<Option> optionArrayList;
-    private Button logout;
+    private Button btnLogout;
     private GoogleApiClient mGoogleApiClient;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
         getActivity().setTitle(R.string.more);
         View contentView = inflater.inflate(R.layout.fragment_more, container, false);
         listViewOption = contentView.findViewById(R.id.listOption);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -56,8 +59,8 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
                 .enableAutoManage(getActivity(),  this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        logout = (Button) contentView.findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
+        btnLogout = (Button) contentView.findViewById(R.id.logout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logout1();
