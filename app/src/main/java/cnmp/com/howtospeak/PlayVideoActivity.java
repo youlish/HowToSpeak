@@ -2,6 +2,7 @@ package cnmp.com.howtospeak;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
@@ -51,6 +52,10 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
      */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
+    private MyPlaybackEventListener playbackEventListener;
+    private MyPlayerStateChangeListener playerStateChangeListener;
+
+
     private View videoBox;
     //private View closeButton;
     private boolean isFullscreen;
@@ -70,6 +75,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
     private ArrayList<Long> arrayListTime = new ArrayList<>();
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerView youTubePlayerView;
+    private MyAsync mAsync;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +109,10 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         listSubtitleAdapter = new ListSubtitleAdapter(this, R.layout.item_list_subtitle, arrayListSubtitle);
         listViewSubtitle.setAdapter(listSubtitleAdapter);
 
+        playerStateChangeListener = new MyPlayerStateChangeListener();
+        playbackEventListener = new MyPlaybackEventListener();
+
+
         videoBox = findViewById(R.id.video_box);
         //closeButton = findViewById(R.id.close_button);
         videoBox.setVisibility(View.INVISIBLE);
@@ -126,11 +136,12 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
         btnPreviousVideo.setOnClickListener(this);
         btnPreviousVideo.setTag(DEFAULT_BUTTON_ALPHA);
 
-        //layout();
         checkYouTubeApi();
 
         loadSubtitle(videoId);
         listViewSubtitle.setOnItemClickListener(this);
+
+
     }
 
 
@@ -200,7 +211,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        //layout();
     }
 
     @Override
@@ -210,7 +220,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
     @Override
     protected void onStart() {
         super.onStart();
-        autoScrollListView();
     }
 
     private static void setLayoutSize(View view, int width, int height) {
@@ -275,21 +284,6 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
 
     }
 
-    public void autoScrollListView() {
-        Log.d("IsPlaying", String.valueOf(youTubePlayer.isPlaying()));
-        /*Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (player.isPlaying()) {
-
-                    //scroll list view at miliseconds
-                    scrollListViewByTime(player.getCurrentTimeMillis());
-                }
-            }
-        });
-        t.start();*/
-    }
-
     public void setVideoId(String videoId, int timeStart) {
         if (videoId != null && !videoId.equals(this.videoId)) {
             this.videoId = videoId;
@@ -303,19 +297,134 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements YouTubePla
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-//       youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
-//        youTubePlayer.setPlaybackEventListener(playBackEventListener);
+        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
+        youTubePlayer.setPlaybackEventListener(playbackEventListener);
         this.youTubePlayer = youTubePlayer;
         youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
         youTubePlayer.setOnFullscreenListener((PlayVideoActivity) this);
         if (!b && videoId != null) {
             youTubePlayer.loadVideo(videoId, second);
         }
+        mAsync = new MyAsync();
+        mAsync.execute();
 
     }
+
+    private class MyAsync extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            do {
+                final int ms = youTubePlayer.getCurrentTimeMillis();
+                try {
+                    Thread.sleep(500);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //stuff that updates ui
+                            scrollListViewByTime(ms);
+                        }
+                    });
+                    if (isCancelled()) break;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            Log.d("AHIHI", String.valueOf(values));
+        }
+    }
+
+    private String getTimesText() {
+        int currentTimeMillis = youTubePlayer.getCurrentTimeMillis();
+        int durationMillis = youTubePlayer.getDurationMillis();
+        return String.valueOf(currentTimeMillis);
+    }
+
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         this.youTubePlayer = null;
     }
+
+    private final class MyPlaybackEventListener implements YouTubePlayer.PlaybackEventListener {
+        String playbackState = "NOT_PLAYING";
+        String bufferingState = "";
+
+        @Override
+        public void onPlaying() {
+            playbackState = "PLAYING";
+            Log.d("PLAYING ", getTimesText());
+            scrollListViewByTime(youTubePlayer.getCurrentTimeMillis());
+            mAsync = new MyAsync();
+            mAsync.execute();
+        }
+
+        @Override
+        public void onBuffering(boolean isBuffering) {
+            bufferingState = isBuffering ? "(BUFFERING)" : "";
+        }
+
+        @Override
+        public void onStopped() {
+            playbackState = "STOPPED";
+        }
+
+        @Override
+        public void onPaused() {
+            playbackState = "PAUSED";
+            mAsync.cancel(true);
+        }
+
+        @Override
+        public void onSeekTo(int endPositionMillis) {
+            scrollListViewByTime(endPositionMillis);
+        }
+    }
+
+    private final class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
+        String playerState = "UNINITIALIZED";
+
+        @Override
+        public void onLoading() {
+            playerState = "LOADING";
+        }
+
+        @Override
+        public void onLoaded(String videoId) {
+            playerState = String.format("LOADED %s", videoId);
+        }
+
+        @Override
+        public void onAdStarted() {
+            playerState = "AD_STARTED";
+        }
+
+        @Override
+        public void onVideoStarted() {
+            playerState = "VIDEO_STARTED";
+        }
+
+        @Override
+        public void onVideoEnded() {
+            playerState = "VIDEO_ENDED";
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason reason) {
+            playerState = "ERROR (" + reason + ")";
+            if (reason == YouTubePlayer.ErrorReason.UNEXPECTED_SERVICE_DISCONNECTION) {
+                // When this error occurs the player is released and can no longer be used.
+                youTubePlayer = null;
+            }
+        }
+
+    }
+
 }

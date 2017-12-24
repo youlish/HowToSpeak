@@ -31,9 +31,11 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
     private LayoutInflater inflater;
     private ThumbnailListener thumbnailListener;
     private boolean labelsVisible;
+    private Context context;
 
     public RecyclerViewHorizontalVideoApdater(Context context, ArrayList<VideoModel> data) {
         this.list = data;
+        this.context = context;
         entryView = new ArrayList<View>();
         thumbnailViewToLoaderMap = new HashMap<YouTubeThumbnailView, YouTubeThumbnailLoader>();
         inflater = LayoutInflater.from(context);
@@ -75,11 +77,14 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
         switch (level) {
             case BEGIN_LEVEL:
                 holder.txtLevel.setText("BEG");
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_blue));
                 break;
             case INTERMEDIATE_LEVEL:
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_yellow));
                 holder.txtLevel.setText("INT");
                 break;
             case ADVANCED_LEVEL:
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_red));
                 holder.txtLevel.setText("ADV");
                 break;
         }

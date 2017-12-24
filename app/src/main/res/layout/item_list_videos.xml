@@ -36,6 +36,7 @@
                 android:textSize="13sp" />
 
             <LinearLayout
+                android:id="@+id/layout_level_background"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"

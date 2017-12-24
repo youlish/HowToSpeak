@@ -3,15 +3,13 @@ package cnmp.com.howtospeak.views;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
-import java.util.ArrayList;
-
 import cnmp.com.howtospeak.PlayVideoActivity;
 import cnmp.com.howtospeak.R;
-import cnmp.com.howtospeak.model.VideoModel;
 
 /**
  * Created by henry on 12/9/2017.
@@ -23,6 +21,7 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
     public YouTubeThumbnailView thumbai;
     public String videoID;
     public int position;
+    public LinearLayout linearLayout;
     public void setVideoID(String videoID) {
         this.videoID = videoID;
     }
@@ -32,7 +31,8 @@ public class ViewHolderVideo extends RecyclerView.ViewHolder {
 
         txtVideoTitle = itemView.findViewById(R.id.txt_video_title);
         txtLevel = itemView.findViewById(R.id.txt_level);
-        thumbai = (YouTubeThumbnailView) itemView.findViewById(R.id.thumbnail);
+        linearLayout = itemView.findViewById(R.id.layout_level_background);
+        thumbai = itemView.findViewById(R.id.thumbnail);
         //called when click icon of video
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

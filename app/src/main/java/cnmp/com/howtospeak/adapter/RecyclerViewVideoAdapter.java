@@ -31,10 +31,12 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVid
     private LayoutInflater inflater;
     private ThumbnailListener thumbnailListener;
     private boolean labelsVisible;
+    private Context context;
 
     public RecyclerViewVideoAdapter(Context context, ArrayList<VideoModel> data) {
         this.list = data;
         entryView = new ArrayList<View>();
+        this.context = context;
         thumbnailViewToLoaderMap = new HashMap<YouTubeThumbnailView, YouTubeThumbnailLoader>();
         inflater = LayoutInflater.from(context);
         thumbnailListener = new ThumbnailListener();
@@ -63,10 +65,30 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<ViewHolderVid
         return holder;
     }
 
+
+    private final int BEGIN_LEVEL = 1;
+    private final int INTERMEDIATE_LEVEL = 2;
+    private final int ADVANCED_LEVEL = 3;
+
     @Override
     public void onBindViewHolder(ViewHolderVideo holder, int position) {
         VideoModel video = list.get(position);
-        holder.txtLevel.setText(String.valueOf(video.getLevel()));
+        int level = video.getLevel();
+        switch (level) {
+            case BEGIN_LEVEL:
+                holder.txtLevel.setText("BEG");
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_blue));
+                break;
+            case INTERMEDIATE_LEVEL:
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_yellow));
+                holder.txtLevel.setText("INT");
+                break;
+            case ADVANCED_LEVEL:
+                holder.linearLayout.setBackground(context.getDrawable(R.drawable.background_level_red));
+                holder.txtLevel.setText("ADV");
+                break;
+        }
+
         YouTubeThumbnailLoader loader = thumbnailViewToLoaderMap.get(holder.thumbai);
         holder.thumbai.initialize(DeveloperKey.DEVELOPER_KEY, thumbnailListener);
         if (loader == null) {

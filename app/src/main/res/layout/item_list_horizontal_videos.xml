@@ -53,7 +53,6 @@
         </LinearLayout>
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="0.8"
@@ -61,10 +60,11 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/layout_level_background"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"
-                android:background="@drawable/button_primary"
+                android:background="@drawable/background_level_blue"
                 android:gravity="center">
 
                 <TextView
