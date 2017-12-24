@@ -26,6 +26,7 @@
         android:text="@string/introduce_2" />
 
     <Button
+        android:id="@+id/btnLog"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"

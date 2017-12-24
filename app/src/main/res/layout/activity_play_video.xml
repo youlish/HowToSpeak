@@ -11,9 +11,8 @@
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/video_fragment_container"
-            class="cnmp.com.howtospeak.fragment.VideoFragment"
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/playerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1032540085120",
+    "firebase_url": "https://howtospeak-190006.firebaseio.com",
+    "project_id": "howtospeak-190006",
+    "storage_bucket": "howtospeak-190006.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032540085120:android:48463559439c2dd0",
+        "android_client_info": {
+          "package_name": "cnmp.com.howtospeak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032540085120-398u0b8nplsdias45mccei6iegjg1cms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cnmp.com.howtospeak",
+            "certificate_hash": "078b50277a4458dee7a12c50855edb4a3659b351"
+          }
+        },
+        {
+          "client_id": "1032540085120-15o9votmkmkct2avqe6jl60egm3s77fu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyN-qNwHu4mR31_YUHqrfAAnyBa-n7DUI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032540085120-15o9votmkmkct2avqe6jl60egm3s77fu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
