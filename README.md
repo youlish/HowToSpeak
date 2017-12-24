@@ -37,25 +37,44 @@ p/s: Tất cả các video được lấy trên Youtube
 ![](header.png)
 
 ## Nền tảng công nghệ
-Ứng dụng được phát triển hoạt động trên Android
+Server:
+- [@Youtube Data API V3](https://developers.google.com/youtube/v3/)
+- [@Flask restful api](http://flask.pocoo.org/)
+- [@Python](https://www.python.org/)
+- [@Docker](https://www.docker.com/)
 
-API được code bằng .Net	
+Client:
+- [@Android studio](https://developer.android.com/studio/index.html)
+- [@Retrofit](http://square.github.io/retrofit/)
+- [@Firebase](https://firebase.google.com/)
+- [@Google APi](https://console.developers.google.com)
+- [@Facebook API]
+- [@Youtube Player API](https://developers.google.com/youtube/android/player/)
 
-
-## Usage example
-
-
-## Development setup
-
-
-## Release History
+## Các version
 
 * 0.0.1
-    * Work in progress
+    *  Gợi ý các video
+    *  Search video theo từ hoặc câu
+    *  Play video có phụ đề 
+    *  Cung cấp danh mục để lựa chọn
+    *  Login google, facebook
 
-## Meta
+## Nhóm phát triển Plus Team
+* Trưởng nhóm (Scrum master)
+	* Hinh_CT – Nguyễn Văn Hinh(https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
 
-Hinh_CT – [@Facebook](https://www.facebook.com/Hinh1108) – hinh1108@gmail.com
+* Developer :
+	* Hinh_CT – Nguyễn Văn Hinh(https://www.facebook.com/Hinh1108) 
+	* HenryNQC - Nguyễn Quốc Cường(https://www.facebook.com/HenryNqc)
+	* DungYDBG - Trần Đức Dũng(https://www.facebook.com/ducdung2801)
+
+*Phụ trách nội dung, test :
+	* Hóa Trần - Trần Thanh Hóa(https://www.facebook.com/hoatran6496)
+
+
+
+
 
 
 <!-- Markdown link & img dfn's -->
