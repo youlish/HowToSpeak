@@ -283,6 +283,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements View.OnCli
                     position -= 1;
                     view.setEnabled(true);
                     second = listVideos.get(position).getTimeStart();
+                    loadSubtitle(listVideos.get(position).getId());
                     setVideoId(listVideos.get(position).getId(), second);
                     view.setAlpha(DEFAULT_BUTTON_ALPHA_1);
 
@@ -296,6 +297,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements View.OnCli
                     position += 1;
                     view.setEnabled(true);
                     second = listVideos.get(position).getTimeStart();
+                    loadSubtitle(listVideos.get(position).getId());
                     setVideoId(listVideos.get(position).getId(), second);
                     view.setAlpha(DEFAULT_BUTTON_ALPHA_1);
 
