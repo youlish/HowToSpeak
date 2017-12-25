@@ -1,6 +1,7 @@
 package cnmp.com.howtospeak.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cnmp.com.howtospeak.PlayVideoActivity;
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.model.DeveloperKey;
 import cnmp.com.howtospeak.model.VideoModel;
@@ -70,8 +72,8 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
     private final int ADVANCED_LEVEL = 3;
 
     @Override
-    public void onBindViewHolder(ViewHolderVideo holder, int position) {
-        VideoModel video = list.get(position);
+    public void onBindViewHolder(ViewHolderVideo holder, final int position) {
+        final VideoModel video = list.get(position);
 
         int level = video.getLevel();
         switch (level) {
@@ -98,9 +100,18 @@ public class RecyclerViewHorizontalVideoApdater extends RecyclerView.Adapter<Vie
             loader.setVideo(video.getId());
 
         }
+
         holder.txtVideoTitle.setText(video.getTitle());
         holder.txtVideoTitle.setVisibility(labelsVisible ? View.VISIBLE : View.GONE);
-        holder.setVideoID(video.getId());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PlayVideoActivity.class);
+                intent.putExtra("Position", position);
+                intent.putExtra("ListVideo", list);
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 

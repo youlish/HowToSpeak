@@ -97,9 +97,11 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements View.OnCli
 
         Intent intent = getIntent();
         position = intent.getExtras().getInt("Position");
-        listVideos = ResultsSearchActivity.getListVideos();
-        if (listVideos.size() == 0) {
+        listVideos = (ArrayList<VideoModel>) intent.getSerializableExtra("ListVideo");
+        if (listVideos == null) {
             videoId = intent.getExtras().getString("VideoID");
+            btnNextVideo.setEnabled(false);
+            btnPreviousVideo.setEnabled(false);
             setVideoId(videoId, 0);
         } else {
             videoId = listVideos.get(position).getId();
@@ -290,7 +292,7 @@ public class PlayVideoActivity extends YouTubeBaseActivity implements View.OnCli
                 }
                 break;
             case R.id.btn_next_video:
-                if (position >= listVideos.size()) {
+                if (position >= listVideos.size()-1) {
                     view.setEnabled(false);
                     view.setAlpha(DEFAULT_BUTTON_ALPHA);
                 } else {

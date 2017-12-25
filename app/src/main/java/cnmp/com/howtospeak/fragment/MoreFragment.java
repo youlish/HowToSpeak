@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import cnmp.com.howtospeak.LoginActivity;
+import cnmp.com.howtospeak.MainActivity;
 import cnmp.com.howtospeak.R;
 import cnmp.com.howtospeak.adapter.ListViewOptionsAdapter;
 import cnmp.com.howtospeak.model.Acount;
@@ -90,6 +91,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
         return contentView;
     }
 
+
     private void login() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
@@ -107,7 +109,7 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
     }
 
     public void logout1() {
-
+        startActivity(new Intent(getActivity(), MainActivity.class));
         FirebaseAuth.getInstance().signOut();
         if (AccessToken.getCurrentAccessToken() != null) {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {
@@ -117,11 +119,11 @@ public class MoreFragment extends Fragment implements GoogleApiClient.OnConnecti
 
                 }
             }).executeAsync();
-            Toast.makeText(getContext(), "successful btnLogin", Toast.LENGTH_LONG).show();
+            SharedPreferencesManganer.saveAcount(getContext(), null);
             return;
         } else if (mGoogleApiClient.isConnected()) {
             logout();
-            Toast.makeText(getContext(), "successful btnLogin", Toast.LENGTH_LONG).show();
+            SharedPreferencesManganer.saveAcount(getContext(),null);
         }
 
     }
