@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class CategoryActivity extends AppCompatActivity {
             listVideos.addAll(GetAPI.getListVideoByCategoryId(category.getId()).getListVideo());
         }
         txtNotify.setText(category.getCategoryName() + " has "+listVideos.size()+" videos");
-        Toast.makeText(this,listVideos.size()+"",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,listVideos.size()+"",Toast.LENGTH_LONG).show();
 
         viewVideoAdapter.notifyDataSetChanged();
     }
